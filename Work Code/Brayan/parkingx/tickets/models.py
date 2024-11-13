@@ -27,10 +27,13 @@ class TicketE(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     entrace_time = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     patente = models.CharField(max_length=6)
+    # Relacionar estado de ticket
     price = models.FloatField(null=True, blank=True)
     
     def __str__(self) -> str:
         return self.patente
+    
+
 # Ticket de salida
 
 # Protocolos de seguridad
