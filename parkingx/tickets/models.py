@@ -21,7 +21,7 @@ class Usuario(AbstractUser):
     avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
 
     def __str__(self) -> str:
-        return f'{self.name} {self.last_name} {self.rut} {self.email}'
+        return f'{self.name} {self.last_name}'
 
 # Ticket de entrada
 
@@ -38,7 +38,7 @@ class Protocolo(models.Model):
     hora_ingreso = models.TimeField()
     hora_salida = models.TimeField()
     date = models.DateField()
-    description = models.TextField(verbose_name='Descripción', max_length=45)
+    description = models.TextField(max_length=45)
 
     def __str__(self) -> str:
         return f'{self.name} {self.last_name} {self.rut} {self.number} {self.patente} {self.description}'

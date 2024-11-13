@@ -40,7 +40,7 @@ class CreateProtocolo(CreateView, ListView):
     model = Protocolo
     form_class = ProtocoloForm
     template_name = 'tickets/protocolo.html'
-    success_url = reverse_lazy('protocolo')
+    success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
 
     def form_valid(self, form):
@@ -51,13 +51,13 @@ class UpdateProtocolo(UpdateView):
     model = Protocolo
     form_class = ProtocoloForm
     template_name = 'tickets/protocolo_update.html'
-    success_url = reverse_lazy('protocolo')
+    success_url = reverse_lazy('protocolos')
 
 @method_decorator(login_required, name='dispatch')
 class DeleteProtocolo(DeleteView):
     model = Protocolo
     template_name = 'tickets/protocolo_delete.html'
-    success_url = reverse_lazy('protocolo')
+    success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
 
 # ----------------------------------- #
