@@ -1,0 +1,17 @@
+{% extends 'tickets/base.html' %}
+
+{% block content %}
+<div class="p-3">
+    {% if protocolos %}
+    <div class="message-content">
+        <h3>¿Eliminar protocolo: <b class="blue-sys">{{ protocolos.id }}</b>?</h3>
+        <p class="text-secondary mb-4">Al confirmar, se eliminará el protocolo {{ protocolos.id }} de manera definitiva del sistema...</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" value="Eliminar" class="btn btn-danger mx-3">
+            <a href="{% url 'protocolo' %}" class="btn btn-primary">Cancelar</a>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

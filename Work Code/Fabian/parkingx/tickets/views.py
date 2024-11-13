@@ -10,6 +10,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
@@ -22,6 +23,7 @@ def Home(request):
 
 # ----------------------------------- #
 
+@method_decorator(login_required, name='dispatch')
 class CreateRol(CreateView):
     model = Rol
     form_class = RolForm
@@ -32,7 +34,8 @@ class CreateRol(CreateView):
         return super().form_valid(form)
     
 # ----------------------------------- #
-    
+
+@method_decorator(login_required, name='dispatch')    
 class CreateProtocolo(CreateView, ListView):
     model = Protocolo
     form_class = ProtocoloForm
@@ -42,13 +45,15 @@ class CreateProtocolo(CreateView, ListView):
 
     def form_valid(self, form):
         return super().form_valid(form)
-    
+
+@method_decorator(login_required, name='dispatch')    
 class UpdateProtocolo(UpdateView):
     model = Protocolo
     form_class = ProtocoloForm
     template_name = 'tickets/protocolo_update.html'
     success_url = reverse_lazy('protocolo')
 
+@method_decorator(login_required, name='dispatch')
 class DeleteProtocolo(DeleteView):
     model = Protocolo
     template_name = 'tickets/protocolo_delete.html'
@@ -57,6 +62,7 @@ class DeleteProtocolo(DeleteView):
 
 # ----------------------------------- #
 
+@method_decorator(login_required, name='dispatch')
 class CreateUsuario(UserPassesTestMixin, CreateView):
     model = Usuario
     form_class = UsuarioForm
@@ -64,17 +70,20 @@ class CreateUsuario(UserPassesTestMixin, CreateView):
     success_url = reverse_lazy('home')
 
     def test_func(self):
-        return self.request.user.rol.name == 'root'
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
     
     def form_valid(self, form):
         user = form.save()
         return super().form_valid(form)
-    
+
+@method_decorator(login_required, name='dispatch')    
 class ListUsuario(ListView):
     model = Usuario
     template_name = 'tickets/userlist.html'
     context_object_name = 'usersys'
 
+@method_decorator(login_required, name='dispatch')
 class UpdateUsuario(UpdateView):
     model = Usuario
     form_class = UserUpdateForm
@@ -85,7 +94,8 @@ class UpdateUsuario(UpdateView):
     def get_object(self, queryset=None):
         pk = self.kwargs.get('pk')
         return Usuario.objects.get(pk=pk)
-    
+
+@method_decorator(login_required, name='dispatch')    
 class DeleteUsuario(DeleteView):
     model = Usuario
     template_name = 'tickets/userdelete.html'

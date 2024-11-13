@@ -8,7 +8,7 @@ class Rol(models.Model):
     description = models.TextField()
 
     def __str__(self) -> str:
-        return f'{self.name} {self.description}'
+        return self.name
 
 class Usuario(AbstractUser):
     # ID proporcionado por django

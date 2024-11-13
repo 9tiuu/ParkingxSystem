@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="user-list-content">
+    <h2 class="mb-4 blue-sys">Gestión de Usuarios</h2>
     <div class="mb-3 user-template-actions">
         <div class="search-content">
             <i class="bi bi-search menu-icon"></i>
@@ -10,7 +11,7 @@
             <button class="btn btn-primary">Buscar</button>
         </div>
         <div class="d-flex gap-2">
-            <a href="{% url 'usercreate' %}" class="btn btn-primary">Crear usuario</a>
+            <a href="{% url 'usercreate' %}" class="btn btn-primary">Crear usuarios</a>
             <a href="{% url 'rolcreate' %}" class="btn btn-primary">Roles de usuario</a>
         </div>
     </div>
@@ -38,8 +39,12 @@
                     <td>{{ u.email }}</td>
                     <td>{{ u.rol }}</td>
                     <td class="d-flex gap-2">
-                        <a href="{% url 'userupdate' u.id %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                        <a href="{% url 'userdelete' u.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                        {% if request.user.rol.name != 'root' and u.rol.name == 'root' or request.user.rol.name != 'root' and u.rol.name == 'Administrador' %}
+                            <p class="text-danger">NO AUTORIZADO</p>
+                        {% else %}
+                            <a href="{% url 'userupdate' u.id %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                            <a href="{% url 'userdelete' u.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                        {% endif %}
                     </td>
                 <tr>
                 {% endfor %}

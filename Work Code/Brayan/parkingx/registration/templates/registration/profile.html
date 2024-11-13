@@ -1,0 +1,58 @@
+{% extends 'tickets/base.html' %}
+
+{% block content %}
+
+
+<div class="profile-view">
+    <div class="profile-card">
+        <h3 class="title blue-sys">Perfil de Usuario</h3>
+        <div class="perfil-content">
+            <div class="profile-img-center">
+                {% if request.user.avatar %}
+                <img src="{{ request.user.avatar.url }}" alt="..." style="max-width: 300px; height: 300px; border-radius: 50%;">
+                {% else %}
+                {% load static %}
+                <img src="{% static 'tickets/img/defaultavatar.png' %}" alt="..." style="max-width: 300px; height: 300px; border-radius: 50%;">
+                {% endif %}
+                <a href="{% url 'userupdate' request.user.id %}" class="btn btn-primary edit-perfil">Editar Perfil</i></a>
+            </div>
+            {% comment %} <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" class="btn btn-primary" value="Update">
+                <a href="{% url 'home' %}" class="btn btn-dark">Back</a>
+            </form> {% endcomment %}
+
+            <div class="profile-inpts">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label blue-sys">Username</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="{{usuario.username}}" disabled>
+                </div>
+                <div class="d-flex gap-3 w-100">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label blue-sys">Nombre</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="{{usuario.name}}" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label blue-sys">Apellido</label>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="{{usuario.last_name}}" disabled>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label blue-sys">Rut</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="{{usuario.rut}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label blue-sys">Correo</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="{{usuario.email}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label blue-sys">Rol de usuario</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="{{usuario.rol}}" disabled>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+
+{% endblock %}

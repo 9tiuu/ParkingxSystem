@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView
 urlpatterns = [
     path('home/', views.Home, name='home'),
     path('createrol/', CreateRol.as_view(), name='rolcreate'),
-    path('protocolo/', CreateProtocolo.as_view(), name='protocolo'),
+    path('protocolos/', CreateProtocolo.as_view(), name='protocolos'),
     path('protocoloUpdate/<int:pk>/', UpdateProtocolo.as_view(), name='protocoloUpdate'),
     path('protocoloDelete/<int:pk>/', DeleteProtocolo.as_view(), name='protocoloDelete'),
     path('usercreate/', CreateUsuario.as_view(), name='usercreate'),
