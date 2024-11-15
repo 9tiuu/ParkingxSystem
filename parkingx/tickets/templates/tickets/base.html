@@ -76,13 +76,14 @@
                 </li>
                 {% endif %}
 
-                {% if request.user.rol.name == 'root' %}
+                {% if request.user.rol.name == 'root' or request.user.rol.name == 'Cajero' or request.user.rol.name == 'Portero'%}
                 <li class="nav-item">
-                    <a class="option nav-link" href="{% url 'home' %}">
+                    <a class="option nav-link" href="{% url 'ticketE' %}">
                         <i class="bi bi-ticket menu-icon"></i>
                         <p class="option-text">Tickets de entrada</p>
                     </a>
                 </li>
+                {% if request.user.rol.name != 'Portero' %}
                 <li class="nav-item">
                     <a class="option nav-link" href="{% url 'home' %}">
                         <i class="bi bi-ticket menu-icon"></i>
@@ -90,14 +91,19 @@
                     </a>
                 </li>
                 {% endif %}
+                {% endif %}
 
             </ul>
         </div>
         <div class="home-content">
             {% block content %}
-            {% comment %} <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div> {% endcomment %}
+            
+            <div class="p-4">
+                <div class="home-bg">
+                    <img src="{% static 'tickets/img/Logo.png' %}" alt="">
+                </div>
+            </div>
+
             {% endblock %}
         </div>
     </div>

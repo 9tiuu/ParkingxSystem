@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class Rol(models.Model):
+    # ID proporcionado por django
     name = models.CharField(max_length=50)
     description = models.TextField()
 
@@ -16,20 +17,28 @@ class Usuario(AbstractUser):
     last_name = models.CharField(max_length=50)
     rut = models.CharField(max_length=10)
     email = models.EmailField(max_length=254, unique=True)
-    # Contraseña proporcionada por Django
+    # Contraseña proporcionada por django
     rol = models.ForeignKey(Rol, on_delete=models.RESTRICT)
     avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
 
     def __str__(self) -> str:
         return f'{self.name} {self.last_name}'
 
-# Ticket de entrada
+class TicketE(models.Model): # POR TERMINAR
+    # ID proporcionado por django
+    date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    entrace_time = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    patente = models.CharField(max_length=6)
+    # Relacionar estado de ticket (POR HACER)
+    price = models.FloatField(null=True, blank=True)
+    
+    def __str__(self) -> str:
+        return self.patente
 
 # Ticket de salida
 
-# Protocolos de seguridad
-
 class Protocolo(models.Model):
+    # ID proporcionado por django
     name = models.CharField(max_length=45)
     last_name = models.CharField(max_length=45)
     rut = models.CharField(max_length=10)
@@ -41,4 +50,4 @@ class Protocolo(models.Model):
     description = models.TextField(max_length=45)
 
     def __str__(self) -> str:
-        return f'{self.name} {self.last_name} {self.rut} {self.number} {self.patente} {self.description}'
+        return f'{self.patente} {self.description}'

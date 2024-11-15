@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="p-3">
+<div class="p-4">
     <h2 class="my-2 blue-sys">Gestión de Tickets de Entrada</h2>
     {% if request.user.rol.name != 'Cajero' %}
     <form method="POST">
@@ -10,7 +10,11 @@
         
         <div class="d-flex flex-wrap gap-3 mt-4 mb-5">
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary mt-3 mx-2">Crear Ticket</button>
+
+            <div class="btn-form">
+                <button type="submit" class="btn btn-primary mt-4 mx-2">Crear Ticket</button>
+            </div>
+            
         </div>
     </form>
     {% endif %}
@@ -45,8 +49,8 @@
                         <td class="d-flex gap-2">
                             <a href="{% url 'home' %}" class="btn btn-dark"><i class="bi bi-info-circle"></i></a>
                             {% if request.user.rol.name != 'Cajero' %}
-                            <a href="{% url 'TicketEUpdate' p.id %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                            <a href="{% url 'TicketEDelete' p.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                            <a href="{% url 'ticketEupdate' p.id %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                            <a href="{% url 'ticketEdelete' p.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
                             {% endif %}
                         </td>
                     <tr>

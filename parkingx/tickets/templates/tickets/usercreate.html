@@ -53,7 +53,8 @@
                 <input type="password" name="password2" id="id_password2" value="{{ form.passoword2.value|default:"" }}" class="form-control form-crud" required>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Crear usuario</button>
+        <button type="submit" class="btn btn-primary">Crear usuario</button>
+        <a href="{% url 'userlist' %}" class="btn btn-dark mx-2">Volver atrás</a>
     </form>
 </div>
 {% endblock %}

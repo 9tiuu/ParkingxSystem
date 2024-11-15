@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
-from .models import Rol, Usuario, Protocolo
-from .forms import RolForm, UsuarioForm, UserUpdateForm, ProtocoloForm
+from .models import Rol, Usuario, Protocolo, TicketE
+from .forms import RolForm, UsuarioForm, UserUpdateForm, ProtocoloForm, TicketEForm, TicketEUpdateForm
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -15,25 +15,42 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
 
-# ----------------------------------- #
+# ----------------------------------- # HOME
 
 @login_required
 def Home(request):
     return render(request, 'tickets/base.html')
 
-# ----------------------------------- #
+# ----------------------------------- # ROLES
 
 @method_decorator(login_required, name='dispatch')
 class CreateRol(CreateView):
     model = Rol
     form_class = RolForm
-    template_name = 'tickets/createrol.html'
-    success_url = reverse_lazy('home')
+    template_name = 'tickets/roluser_create.html'
+    success_url = reverse_lazy('listrol')
 
     def form_valid(self, form):
         return super().form_valid(form)
     
-# ----------------------------------- #
+class ListRol(ListView):
+    model = Rol
+    template_name = 'tickets/roluser_list.html'
+    context_object_name = 'rol'
+
+class UpdateRol(UpdateView):
+    model = Rol
+    form_class = RolForm
+    template_name = 'tickets/roluser_update.html'
+    success_url = reverse_lazy('listrol')
+
+class DeleteRol(DeleteView):
+    model = Rol
+    template_name = 'tickets/roluser_delete.html'
+    context_object_name = 'rol'
+    success_url = reverse_lazy('listrol')
+    
+# ----------------------------------- # PROTOCOLOS
 
 @method_decorator(login_required, name='dispatch')    
 class CreateProtocolo(CreateView, ListView):
@@ -60,7 +77,7 @@ class DeleteProtocolo(DeleteView):
     success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
 
-# ----------------------------------- #
+# ----------------------------------- # USUARIOS
 
 @method_decorator(login_required, name='dispatch')
 class CreateUsuario(UserPassesTestMixin, CreateView):
@@ -101,6 +118,33 @@ class DeleteUsuario(DeleteView):
     template_name = 'tickets/userdelete.html'
     success_url = reverse_lazy('userlist')
     context_object_name = 'usuario'
+
+# ----------------------------------- # TICKETS DE ENTRADA
+
+@method_decorator(login_required, name='dispatch')    
+class CreateTicketE(CreateView, ListView):
+    model = TicketE
+    form_class = TicketEForm
+    template_name = 'tickets/ticket_entrada.html'
+    success_url = reverse_lazy('ticketE')
+    context_object_name = 'TicketE'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+@method_decorator(login_required, name='dispatch')    
+class UpdateTicketE(UpdateView):
+    model = TicketE
+    form_class = TicketEUpdateForm
+    template_name = 'tickets/tickete_update.html'
+    success_url = reverse_lazy('ticketE')
+
+@method_decorator(login_required, name='dispatch')
+class DeleteTicketE(DeleteView):
+    model = TicketE
+    template_name = 'tickets/tickete_delete.html'
+    success_url = reverse_lazy('ticketE')
+    context_object_name = 'TicketE'
 
 # ----------------------------------- #
 

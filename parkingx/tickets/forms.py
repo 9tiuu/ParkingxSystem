@@ -1,5 +1,5 @@
 from django import forms
-from .models import Usuario, Rol, Protocolo
+from .models import Usuario, Rol, Protocolo, TicketE
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -24,11 +24,11 @@ class RolForm(forms.ModelForm):
         fields = ['name', 'description']
         labels = {
             'name': 'Nombre del Rol',
-            'description': 'Descripción del Rol'
+            'description': 'Descripción'
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'name': forms.TextInput(attrs={'class': 'form-control mt-2'}),
+            'description': forms.Textarea(attrs={'class': 'form-control mt-2', 'rows': 3}),
         }
 
 class UserUpdateForm(UserChangeForm):
@@ -61,14 +61,39 @@ class ProtocoloForm(forms.ModelForm):
             'description': 'Descripción'
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control', 'minlength':2}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'minlength':2}),
-            'rut': forms.TextInput(attrs={'class': 'form-control', 'minlength':10}),
-            'number': forms.TextInput(attrs={'class': 'form-control', 'minlength':9}),
-            'patente': forms.TextInput(attrs={'class': 'form-control', 'minlength':6}),
-            'hora_ingreso': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
-            'hora_salida': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),
-            'date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'description': forms.TextInput(attrs={'class': 'form-control', 'minlength':2}),
+            'name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2}),
+            'rut': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':10}),
+            'number': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':9}),
+            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6}),
+            'hora_ingreso': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control mt-2'}),
+            'hora_salida': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control mt-2'}),
+            'date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control mt-2'}),
+            'description': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2}),
         }
         
+class TicketEForm(forms.ModelForm):
+    class Meta:
+        model = TicketE
+        fields = ['patente']
+        labels = {
+            'patente': 'Patente vehicular'
+        }
+        widgets = {
+            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6})
+        }
+
+class TicketEUpdateForm(forms.ModelForm):
+    class Meta:
+        model = TicketE
+        fields = ['patente','date','entrace_time']
+        labels = {
+            'patente': 'Patente',
+            'date': 'Fecha',
+            'entrace_time': 'Hr Ingreso'
+        }
+        widgets = {
+            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6}),
+            'date': forms.DateInput(attrs={'type':'date', 'class': 'form-control mt-2'}),
+            'entrace_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'})
+        }
