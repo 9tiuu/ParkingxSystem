@@ -7,6 +7,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Parkingx</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+    
     {% load static %}
     <link rel="stylesheet" href="{% static 'tickets/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'tickets/css/login.css' %}">
@@ -55,6 +59,13 @@
         <div class="sidebar">
             <ul class="nav menu flex-column">
 
+                <li class="nav-item">
+                    <a class="option nav-link" href="{% url 'home' %}">
+                        <i class="bi bi-house-fill menu-icon"></i>
+                        <p class="option-text">Inicio</p>
+                    </a>
+                </li>
+
                 {% if request.user.rol.name == 'root' or request.user.rol.name == 'Administrador' %}
                 <li class="nav-item">
                     <a class="option nav-link" href="{% url 'userlist' %}">
@@ -63,30 +74,36 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="option nav-link" href="{% url 'listrol' %}">
+                        <i class="bi bi-person-vcard-fill menu-icon"></i>
+                        <p class="option-text">Roles de usuario</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="option nav-link" href="{% url 'protocolos' %}">
-                        <i class="bi bi-file-earmark-text menu-icon"></i>
+                        <i class="bi bi-file-earmark-text-fill menu-icon"></i>
                         <p class="option-text">Protocolos</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="option nav-link" href="{% url 'home' %}">
-                        <i class="bi bi-ticket-detailed menu-icon"></i>
+                        <i class="bi bi-ticket-detailed-fill menu-icon"></i>
                         <p class="option-text">Estados de Tickets</p>
                     </a>
                 </li>
                 {% endif %}
 
-                {% if request.user.rol.name == 'root' or request.user.rol.name == 'Cajero' or request.user.rol.name == 'Portero'%}
+                {% if request.user.rol.name == 'root' or request.user.rol.name == 'Administrador' or request.user.rol.name == 'Cajero' or request.user.rol.name == 'Portero'%}
                 <li class="nav-item">
                     <a class="option nav-link" href="{% url 'ticketE' %}">
-                        <i class="bi bi-ticket menu-icon"></i>
+                        <i class="bi bi-ticket-fill menu-icon"></i>
                         <p class="option-text">Tickets de entrada</p>
                     </a>
                 </li>
                 {% if request.user.rol.name != 'Portero' %}
                 <li class="nav-item">
                     <a class="option nav-link" href="{% url 'home' %}">
-                        <i class="bi bi-ticket menu-icon"></i>
+                        <i class="bi bi-ticket-fill menu-icon"></i>
                         <p class="option-text">Tickets de salida</p>
                     </a>
                 </li>
@@ -99,9 +116,85 @@
             {% block content %}
             
             <div class="p-4">
-                <div class="home-bg">
-                    <img src="{% static 'tickets/img/Logo.png' %}" alt="">
+                <h5 class="option-text">¡Hola {{ request.user.name }}!</h5>
+                <h2 class="my-2 blue-sys">Bienvenido a Parkingx</h2>
+                <div class="home-bg mt-3">
+                    <!-- <canvas id="ticketgraph" class="ticket-graph"></canvas> -->
+                    <div class="graphs-content">
+                        <canvas id="ticketgraph" class="ticket-graph"></canvas>
+                    </div>
+                    
+                    <div class="graphs-content date-time-content">
+                        
+                    </div>
                 </div>
+                
+                <div class="home-bg mt-3">
+                    
+                    <div class="graphs-content">
+                        <h5 class="blue-sys mb-2">DEFINIR TITULO</h5>
+                        <div class="graph-data">
+                            <canvas id="ticketgraph3" class="money-graph"></canvas>
+                            <div class="w-100">
+                                <ul class="month-list">
+                                    <li class="d-flex month-data">
+                                        <p>Enero</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Febrero</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Marzo</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Abril</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Mayo</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Junio</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Julio</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Agosto</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Septiembre</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Octubre</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Noviembre</p>
+                                        <p>$0</p>
+                                    </li>
+                                    <li class="d-flex month-data">
+                                        <p>Diciembre</p>
+                                        <p>$0</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>             
+                    
+                    <div class="graphs-content">
+                        
+                    </div>
+                </div>
+                
             </div>
 
             {% endblock %}
@@ -111,4 +204,6 @@
 </body>
     {% load static %}
     <script src="{% static 'tickets/js/script.js' %}"></script>
+    <script src="{% static 'tickets/js/graphs.js' %}"></script>
+    <script src="{% static 'tickets/js/pdf.js' %}"></script>
 </html>

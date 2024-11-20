@@ -1,5 +1,5 @@
 from django import forms
-from .models import Usuario, Rol, Protocolo, TicketE
+from .models import Usuario, Rol, Protocolo, TicketE, TicketState
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -72,18 +72,22 @@ class ProtocoloForm(forms.ModelForm):
             'description': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2}),
         }
         
-class TicketEForm(forms.ModelForm):
+class TicketEForm(forms.ModelForm): # MODIFICAR ------
     class Meta:
         model = TicketE
-        fields = ['patente']
+        fields = ['patente', 'date', 'entrace_time']
         labels = {
-            'patente': 'Patente vehicular'
+            'patente': 'Patente vehicular',
+            'date': 'Fecha',
+            'entrace_time': 'Hr Ingreso'
         }
         widgets = {
-            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6})
+            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6}),
+            'date': forms.TextInput(attrs={'type':'date', 'class': 'form-control mt-2'}),
+            'entrace_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'})
         }
 
-class TicketEUpdateForm(forms.ModelForm):
+class TicketEUpdateForm(forms.ModelForm): # MODIFICAR ------
     class Meta:
         model = TicketE
         fields = ['patente','date','entrace_time']
@@ -94,6 +98,19 @@ class TicketEUpdateForm(forms.ModelForm):
         }
         widgets = {
             'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6}),
-            'date': forms.DateInput(attrs={'type':'date', 'class': 'form-control mt-2'}),
+            'date': forms.TextInput(attrs={'type':'date', 'class': 'form-control mt-2'}),
             'entrace_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'})
+        }
+
+class TicketStateForm(forms.ModelForm):  
+    class Meta:
+        model = TicketState
+        fields = ['name', 'description']
+        labels = {
+            'name':'Nombre de Estado',
+            'description':'Descripción'
+        }
+        widgets = {
+            'name':forms.TextInput(attrs={'class':'form-control mt-2'}),
+            'description':forms.Textarea(attrs={'class':'form-control mt-2'})
         }

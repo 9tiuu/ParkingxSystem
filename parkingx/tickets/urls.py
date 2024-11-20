@@ -1,6 +1,6 @@
 from django.urls import path
 from tickets import views
-from .views import CreateRol, CreateUsuario, ListUsuario, UpdateUsuario, DeleteUsuario, CreateProtocolo, UpdateProtocolo, DeleteProtocolo, CreateTicketE, UpdateTicketE, DeleteTicketE, ListRol, UpdateRol, DeleteRol
+from .views import CreateRol, CreateUsuario, ListUsuario, UpdateUsuario, DeleteUsuario, CreateProtocolo, UpdateProtocolo, DeleteProtocolo, CreateTicketE, UpdateTicketE, DeleteTicketE, DetailTicketE, ListRol, UpdateRol, DeleteRol, ListTicketState, CreateTicketState, UpdateTicketState
 from .views import custom_logout
 from django.contrib.auth.views import LoginView
 
@@ -24,10 +24,16 @@ urlpatterns = [
     path('userupdate/<int:pk>/', UpdateUsuario.as_view(), name='userupdate'),
     path('userdelete/<int:pk>/', DeleteUsuario.as_view(), name='userdelete'),
 
+    # ----------------------------------- # ESTADOS DE TICKETS
+    # LISTAR URL
+    # ACTUALIZAR URL
+    # ELIMINAR URL
+
     # ----------------------------------- # TICKETS DE ENTRADA
     path('ticketE/', CreateTicketE.as_view(), name='ticketE'),
     path('ticketEUpdate/<int:pk>/', UpdateTicketE.as_view(), name='ticketEupdate'),
     path('ticketEDelete/<int:pk>/', DeleteTicketE.as_view(), name='ticketEdelete'),
+    path('ticketEDetail/<int:pk>/', DetailTicketE.as_view(), name='ticketEdetail'),
 
     path('logout/', custom_logout, name='logout'),
     path('', LoginView.as_view(), name='login'),

@@ -23,17 +23,25 @@ class Usuario(AbstractUser):
 
     def __str__(self) -> str:
         return f'{self.name} {self.last_name}'
-
-class TicketE(models.Model): # POR TERMINAR
+    
+class TicketState(models.Model):
     # ID proporcionado por django
-    date = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
+    name = models.CharField(max_length=50)
+    description = models.TextField()
+
+    def __str__(self) -> str:
+        return self.name
+
+class TicketE(models.Model):
+    # ID proporcionado por django
+    date = models.DateField(auto_now_add=False, null=True, blank=True)
     entrace_time = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     patente = models.CharField(max_length=6)
-    # Relacionar estado de ticket (POR HACER)
+    # state = ???
     price = models.FloatField(null=True, blank=True)
     
     def __str__(self) -> str:
-        return self.patente
+        return f'{self.patente} {self.state}'
 
 # Ticket de salida
 

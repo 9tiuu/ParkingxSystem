@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
-from .models import Rol, Usuario, Protocolo, TicketE
-from .forms import RolForm, UsuarioForm, UserUpdateForm, ProtocoloForm, TicketEForm, TicketEUpdateForm
+from .models import Rol, Usuario, Protocolo, TicketE, TicketState
+from .forms import RolForm, UsuarioForm, UserUpdateForm, ProtocoloForm, TicketEForm, TicketEUpdateForm, TicketStateForm
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -105,12 +106,12 @@ class UpdateUsuario(UpdateView):
     model = Usuario
     form_class = UserUpdateForm
     template_name = 'tickets/userupdate.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('userlist')
     context_object_name = 'usuario'
 
-    def get_object(self, queryset=None):
-        pk = self.kwargs.get('pk')
-        return Usuario.objects.get(pk=pk)
+    # def get_object(self, queryset=None):
+    #     pk = self.kwargs.get('pk')
+    #     return Usuario.objects.get(pk=pk)
 
 @method_decorator(login_required, name='dispatch')    
 class DeleteUsuario(DeleteView):
@@ -118,6 +119,20 @@ class DeleteUsuario(DeleteView):
     template_name = 'tickets/userdelete.html'
     success_url = reverse_lazy('userlist')
     context_object_name = 'usuario'
+
+# ----------------------------------- # ESTADOS DE TICKETS
+
+class ListTicketState(ListView):
+    pass
+
+class CreateTicketState(CreateView):
+    pass
+
+class UpdateTicketState(UpdateView):
+    pass
+
+class DeleteTicketState(DeleteView):
+    pass
 
 # ----------------------------------- # TICKETS DE ENTRADA
 
@@ -129,13 +144,10 @@ class CreateTicketE(CreateView, ListView):
     success_url = reverse_lazy('ticketE')
     context_object_name = 'TicketE'
 
-    def form_valid(self, form):
-        return super().form_valid(form)
-
 @method_decorator(login_required, name='dispatch')    
 class UpdateTicketE(UpdateView):
     model = TicketE
-    form_class = TicketEUpdateForm
+    form_class = TicketEForm # FORMULARIO TEMPORAL, REVISAR REQUERIMIENTOS
     template_name = 'tickets/tickete_update.html'
     success_url = reverse_lazy('ticketE')
 
@@ -144,6 +156,12 @@ class DeleteTicketE(DeleteView):
     model = TicketE
     template_name = 'tickets/tickete_delete.html'
     success_url = reverse_lazy('ticketE')
+    context_object_name = 'TicketE'
+
+@method_decorator(login_required, name='dispatch')
+class DetailTicketE(DetailView):
+    model = TicketE
+    template_name = 'tickets/tickete_detail.html'
     context_object_name = 'TicketE'
 
 # ----------------------------------- #
