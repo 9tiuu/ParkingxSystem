@@ -1,0 +1,17 @@
+{% extends 'tickets/base.html' %}
+
+{% block content %}
+<div class="p-3 ">
+  <h2 class="my-2 blue-sys">Editar Ticket de Entrada</h2>
+  <form method="POST">
+    {% csrf_token %}
+    
+    <div class="d-flex flex-wrap gap-3 mt-3">
+      {{ form.as_p }}
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Confirmar cambios</button>
+    <a href="{% url 'ticketE' %}" class="btn btn-primary mt-3">Cancelar</a>
+  </form>
+</div>
+{% endblock %}
