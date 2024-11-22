@@ -2,11 +2,18 @@
 
 {% block content %}
   
-{% comment %} 
-
-  USAR MISMA PLANTILLA AL -- ELIMINAR -- ROLES DE USUARIO...
-  HACER MODIFICACIONES RELACIONADAS A LOS ESTADOS DE TICKET
-  
-{% endcomment %}
+<div class="p-3">
+  {% if Estado %}
+  <div class="message-content">
+      <h3>¿Eliminar Estado de ticket: <b class="blue-sys">{{ Estado.name }}</b>?</h3>
+      <p class="text-secondary mb-4">Al confirmar, se eliminará el Estado de ticket de manera definitiva del sistema...</p>
+      <form method="post">
+          {% csrf_token %}
+          <input type="submit" value="Eliminar" class="btn btn-danger mx-3">
+          <a href="{% url 'statelist' %}" class="btn btn-primary">Cancelar</a>
+      </form>
+  </div>
+  {% endif %}
+</div>
 
 {% endblock %}

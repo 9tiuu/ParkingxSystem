@@ -7,10 +7,17 @@
     </div>
     <form method="POST" enctype="multipart/form-data" class="users-c-form">
         {% csrf_token %}      
-        {% comment %} {{ form.as_p }} {% endcomment %}
         <div>
             <label for="id_username" class="mb-2 blue-sys">Nombre de usuario</label>
             <input type="text" name="username" id="id_username" value="{{ form.username.value|default:"" }}" class="form-control form-crud" required>
+
+            {% comment %} {% if form.username.errors %}
+            <div class="errors">
+                {% for error in form.username.errors %}
+                <p class="text-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %} {% endcomment %}
         </div>
         <div class="dual-form">
             <div class="w-100">

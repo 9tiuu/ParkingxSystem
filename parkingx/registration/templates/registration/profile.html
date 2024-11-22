@@ -2,7 +2,6 @@
 
 {% block content %}
 
-
 <div class="profile-view">
     <div class="profile-card">
         <h3 class="title blue-sys">Perfil de Usuario</h3>
@@ -15,7 +14,7 @@
                 {% load static %}
                 <img src="{% static 'tickets/img/defaultavatar.png' %}" alt="..." style="max-width: 300px; height: 300px; border-radius: 50%;">
                 {% endif %}
-                <a href="{% url 'home' %}" class="btn btn-primary edit-perfil">Editar Perfil</i></a>
+                <a href="{% url 'profile_update' request.user.id %}" class="btn btn-primary edit-perfil">Editar Perfil</i></a>
             </div>
 
             <div class="profile-inpts">

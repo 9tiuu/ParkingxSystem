@@ -4,11 +4,9 @@ const fechat = document.getElementById('d3').innerHTML;
 const horat = document.getElementById('d4').innerHTML;
 const estado = document.getElementById('d5').innerHTML;
 const precio = document.getElementById('d6').innerHTML;
-// console.log(id.innerHTML);
     
 document.getElementById("mypdf").addEventListener("click", () => {
-    console.log('asd');
-        
+    const patenteValue = document.getElementById('patente').innerHTML;
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -23,6 +21,7 @@ document.getElementById("mypdf").addEventListener("click", () => {
         doc.text(estado, 10, 60);
         doc.text(precio, 10, 70);
         doc.addImage('http://127.0.0.1:8000/static/tickets/img/qrcode.png', 'PNG', 10, 80, 50, 50);
-
-    doc.save("dataticket.pdf");
+    
+    const TicketFileName = `DataTicket-${patenteValue}.pdf`;
+    doc.save(TicketFileName);
 });

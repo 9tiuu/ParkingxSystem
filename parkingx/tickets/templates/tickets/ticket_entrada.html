@@ -56,7 +56,7 @@
                         <td>${{ p.price }}</td>
                         <td class="d-flex gap-2">
                             <a href="{% url 'ticketEdetail' p.id %}" class="btn btn-dark"><i class="bi bi-info-circle"></i></a>
-                            <a href="{% url 'home' %}" class="btn btn-warning"><i class="bi bi-x-circle"></i></i></a>
+                            <a href="{% url 'ticketEclose' p.id %}" class="btn btn-warning"><i class="bi bi-x-circle"></i></i></a>
                             {% if request.user.rol.name != 'Cajero' %}
                             <a href="{% url 'ticketEupdate' p.id %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                             <a href="{% url 'ticketEdelete' p.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>

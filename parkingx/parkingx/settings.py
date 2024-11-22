@@ -28,13 +28,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-TAILWIND_APP_NAME = 'tickets'
-
 # LOGOUT_REDIRECT_URL = 'login'
+
 LOGIN_REDIRECT_URL = 'home'
 
 AUTH_USER_MODEL = 'tickets.Usuario'
 
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 
 # Application definition

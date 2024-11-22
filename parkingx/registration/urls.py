@@ -3,5 +3,5 @@ from .views import ProfileView, ProfileUpdateView
 
 urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
-    # URL PROFILE UPDATE
+    path('profile_update/<int:pk>/', ProfileUpdateView.as_view(), name='profile_update'),
 ]

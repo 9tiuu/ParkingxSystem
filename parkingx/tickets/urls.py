@@ -1,6 +1,6 @@
 from django.urls import path
 from tickets import views
-from .views import CreateRol, CreateUsuario, ListUsuario, UpdateUsuario, DeleteUsuario, CreateProtocolo, UpdateProtocolo, DeleteProtocolo, CreateTicketE, UpdateTicketE, DeleteTicketE, DetailTicketE, ListRol, UpdateRol, DeleteRol, ListTicketState, CreateTicketState, UpdateTicketState
+from .views import CreateRol, CreateUsuario, ListUsuario, UpdateUsuario, DeleteUsuario, CreateProtocolo, UpdateProtocolo, DeleteProtocolo, CreateTicketE, UpdateTicketE, DeleteTicketE, DetailTicketE, ListRol, UpdateRol, DeleteRol, ListTicketState, CreateTicketState, UpdateTicketState, DeleteTicketState, CloseTicketE
 from .views import custom_logout
 from django.contrib.auth.views import LoginView
 
@@ -25,15 +25,17 @@ urlpatterns = [
     path('userdelete/<int:pk>/', DeleteUsuario.as_view(), name='userdelete'),
 
     # ----------------------------------- # ESTADOS DE TICKETS
-    # LISTAR URL
-    # ACTUALIZAR URL
-    # ELIMINAR URL
+    path('statelist/', ListTicketState.as_view(), name='statelist'),
+    path('statecreate/', CreateTicketState.as_view(), name='statecreate'),
+    path('stateupdate/<int:pk>/', UpdateTicketState.as_view(), name='stateupdate'),
+    path('statedelete/<int:pk>/', DeleteTicketState.as_view(), name='statedelete'),
 
     # ----------------------------------- # TICKETS DE ENTRADA
     path('ticketE/', CreateTicketE.as_view(), name='ticketE'),
     path('ticketEUpdate/<int:pk>/', UpdateTicketE.as_view(), name='ticketEupdate'),
     path('ticketEDelete/<int:pk>/', DeleteTicketE.as_view(), name='ticketEdelete'),
     path('ticketEDetail/<int:pk>/', DetailTicketE.as_view(), name='ticketEdetail'),
+    path('ticketEClose/<int:pk>/', CloseTicketE.as_view(), name='ticketEclose'),
 
     path('logout/', custom_logout, name='logout'),
     path('', LoginView.as_view(), name='login'),

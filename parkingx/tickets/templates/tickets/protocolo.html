@@ -21,17 +21,15 @@
     </div>
     {% if protocolos %}
         <div class="border-table mt-3">
-            <table class="table ">
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
+                        <th scope="col">Nombre Apellido</th>
                         <th scope="col">Rut</th>
                         <th scope="col">Número Telefónico</th>
                         <th scope="col">Patente Vehicular</th>
-                        <th scope="col">Hora de Ingreso</th>
-                        <th scope="col">Hora de Salida</th>
+                        <th scope="col">Hora Ingreso/Salida</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Descripcion</th>
                         <th scope="col">Acción</th>
@@ -41,13 +39,11 @@
                     {% for p in protocolos %}
                     <tr>
                         <th scope="row">{{ p.id }}</th>
-                        <td>{{ p.name }}</td>
-                        <td>{{ p.last_name }}</td>
+                        <td>{{ p.name }} {{ p.last_name }}</td>
                         <td>{{ p.rut }}</td>
                         <td>{{ p.number }}</td>
                         <td>{{ p.patente }}</td>
-                        <td>{{ p.hora_ingreso }}</td>
-                        <td>{{ p.hora_salida }}</td>
+                        <td>{{ p.hora_ingreso }} - {{ p.hora_salida }}</td>
                         <td>{{ p.date|date:"d-m-y" }}</td>
                         <td>{{ p.description }}</td>
                         <td class="d-flex gap-2">

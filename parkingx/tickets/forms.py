@@ -83,8 +83,8 @@ class TicketEForm(forms.ModelForm): # MODIFICAR ------
         }
         widgets = {
             'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6}),
-            'date': forms.TextInput(attrs={'type':'date', 'class': 'form-control mt-2'}),
-            'entrace_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'})
+            'date': forms.TextInput(attrs={'type':'date', 'id':'date-form' ,'class': 'form-control mt-2'}),
+            'entrace_time': forms.TimeInput(attrs={'type':'time',  'id':'hour-form' ,'class': 'form-control mt-2'})
         }
 
 class TicketEUpdateForm(forms.ModelForm): # MODIFICAR ------
@@ -100,6 +100,17 @@ class TicketEUpdateForm(forms.ModelForm): # MODIFICAR ------
             'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6}),
             'date': forms.TextInput(attrs={'type':'date', 'class': 'form-control mt-2'}),
             'entrace_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'})
+        }
+
+class TicketEStateForm(forms.ModelForm): # MODIFICAR ------
+    class Meta:
+        model = TicketE
+        fields = ['state']
+        labels = {
+            'state': 'Estado'
+        }
+        widgets = {
+            'state': forms.Select(attrs={'class':'form-control mt-2'})
         }
 
 class TicketStateForm(forms.ModelForm):  

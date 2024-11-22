@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+# from datetime import datetime, date, timedelta
+# from django.utils.timezone import now
 
 # Create your models here.
 
@@ -37,13 +39,11 @@ class TicketE(models.Model):
     date = models.DateField(auto_now_add=False, null=True, blank=True)
     entrace_time = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True)
     patente = models.CharField(max_length=6)
-    # state = ???
-    price = models.FloatField(null=True, blank=True)
+    state = models.ForeignKey(TicketState, on_delete=models.RESTRICT, default=1)
+    price = models.FloatField(null=True, blank=True, default="20.0")
     
     def __str__(self) -> str:
         return f'{self.patente} {self.state}'
-
-# Ticket de salida
 
 class Protocolo(models.Model):
     # ID proporcionado por django
@@ -59,3 +59,6 @@ class Protocolo(models.Model):
 
     def __str__(self) -> str:
         return f'{self.patente} {self.description}'
+    
+
+# class TicketSalida(models.Model):
