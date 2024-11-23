@@ -30,7 +30,7 @@ def Home(request):
 class CreateRol(CreateView):
     model = Rol
     form_class = RolForm
-    template_name = 'tickets/roluser_create.html'
+    template_name = 'tickets/roles/roluser_create.html'
     success_url = reverse_lazy('listrol')
 
     def form_valid(self, form):
@@ -40,13 +40,13 @@ class CreateRol(CreateView):
     
 class ListRol(ListView):
     model = Rol
-    template_name = 'tickets/roluser_list.html'
+    template_name = 'tickets/roles/roluser_list.html'
     context_object_name = 'rol'
 
 class UpdateRol(UpdateView):
     model = Rol
     form_class = RolForm
-    template_name = 'tickets/roluser_update.html'
+    template_name = 'tickets/roles/roluser_update.html'
     success_url = reverse_lazy('listrol')
 
     def form_valid(self, form):
@@ -55,7 +55,7 @@ class UpdateRol(UpdateView):
 
 class DeleteRol(DeleteView):
     model = Rol
-    template_name = 'tickets/roluser_delete.html'
+    template_name = 'tickets/roles/roluser_delete.html'
     context_object_name = 'rol'
     success_url = reverse_lazy('listrol')
 
@@ -69,7 +69,7 @@ class DeleteRol(DeleteView):
 class CreateProtocolo(CreateView, ListView):
     model = Protocolo
     form_class = ProtocoloForm
-    template_name = 'tickets/protocolo.html'
+    template_name = 'tickets/protocolos/protocolo.html'
     success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
 
@@ -84,7 +84,7 @@ class CreateProtocolo(CreateView, ListView):
 class UpdateProtocolo(UpdateView):
     model = Protocolo
     form_class = ProtocoloForm
-    template_name = 'tickets/protocolo_update.html'
+    template_name = 'tickets/protocolos/protocolo_update.html'
     success_url = reverse_lazy('protocolos')
 
     def form_valid(self, form):
@@ -94,7 +94,7 @@ class UpdateProtocolo(UpdateView):
 @method_decorator(login_required, name='dispatch')
 class DeleteProtocolo(DeleteView):
     model = Protocolo
-    template_name = 'tickets/protocolo_delete.html'
+    template_name = 'tickets/protocolos/protocolo_delete.html'
     success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
 
@@ -108,7 +108,7 @@ class DeleteProtocolo(DeleteView):
 class CreateUsuario(UserPassesTestMixin, CreateView):
     model = Usuario
     form_class = UsuarioForm
-    template_name = 'tickets/usercreate.html'
+    template_name = 'tickets/usuarios/usercreate.html'
     success_url = reverse_lazy('userlist')
 
     def test_func(self):
@@ -123,14 +123,14 @@ class CreateUsuario(UserPassesTestMixin, CreateView):
 @method_decorator(login_required, name='dispatch')    
 class ListUsuario(ListView):
     model = Usuario
-    template_name = 'tickets/userlist.html'
+    template_name = 'tickets/usuarios/userlist.html'
     context_object_name = 'usersys'
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUsuario(UpdateView):
     model = Usuario
     form_class = UserUpdateForm
-    template_name = 'tickets/userupdate.html'
+    template_name = 'tickets/usuarios/userupdate.html'
     success_url = reverse_lazy('userlist')
     context_object_name = 'usuario'
 
@@ -145,7 +145,7 @@ class UpdateUsuario(UpdateView):
 @method_decorator(login_required, name='dispatch')    
 class DeleteUsuario(DeleteView):
     model = Usuario
-    template_name = 'tickets/userdelete.html'
+    template_name = 'tickets/usuarios/userdelete.html'
     success_url = reverse_lazy('userlist')
     context_object_name = 'usuario'
 
@@ -159,14 +159,14 @@ class DeleteUsuario(DeleteView):
 class ListTicketState(ListView):
     model = TicketState
     form_class = TicketStateForm
-    template_name = 'tickets/ticketstate.html'
+    template_name = 'tickets/estados/ticketstate.html'
     context_object_name = 'Estado'
     
 @method_decorator(login_required, name='dispatch')
 class CreateTicketState(UserPassesTestMixin, CreateView):
     model = TicketState
     form_class = TicketStateForm
-    template_name = 'tickets/ticketstate_create.html'
+    template_name = 'tickets/estados/ticketstate_create.html'
     success_url = reverse_lazy('statelist')
 
     def test_func(self):
@@ -181,7 +181,7 @@ class CreateTicketState(UserPassesTestMixin, CreateView):
 class UpdateTicketState(UserPassesTestMixin, UpdateView):
     model = TicketState
     form_class = TicketStateForm
-    template_name = 'tickets/ticketstate_update.html'
+    template_name = 'tickets/estados/ticketstate_update.html'
     success_url = reverse_lazy('statelist')
     context_object_name = 'Estado'
     
@@ -196,7 +196,7 @@ class UpdateTicketState(UserPassesTestMixin, UpdateView):
 @method_decorator(login_required, name='dispatch')    
 class DeleteTicketState(UserPassesTestMixin, DeleteView):
     model = TicketState
-    template_name = 'tickets/ticketstate_delete.html'
+    template_name = 'tickets/estados/ticketstate_delete.html'
     success_url = reverse_lazy('statelist')
     context_object_name = 'Estado'
 
@@ -214,7 +214,7 @@ class DeleteTicketState(UserPassesTestMixin, DeleteView):
 class CreateTicketE(CreateView, ListView):
     model = TicketE
     form_class = TicketEForm
-    template_name = 'tickets/ticket_entrada.html'
+    template_name = 'tickets/tickets_entrada/ticket_entrada.html'
     success_url = reverse_lazy('ticketE')
     context_object_name = 'TicketE'
 
@@ -227,7 +227,7 @@ class CreateTicketE(CreateView, ListView):
 class UpdateTicketE(UpdateView):
     model = TicketE
     form_class = TicketEForm # FORMULARIO TEMPORAL, REVISAR REQUERIMIENTOS
-    template_name = 'tickets/tickete_update.html'
+    template_name = 'tickets/tickets_entrada/tickete_update.html'
     success_url = reverse_lazy('ticketE')
 
     def form_valid(self, form):
@@ -238,7 +238,7 @@ class UpdateTicketE(UpdateView):
 class CloseTicketE(UpdateView):
     model = TicketE
     form_class = TicketEStateForm
-    template_name = 'tickets/tickete_close.html'
+    template_name = 'tickets/tickets_entrada/tickete_close.html'
     success_url = reverse_lazy('ticketE')
 
     def form_valid(self, form):
@@ -248,7 +248,7 @@ class CloseTicketE(UpdateView):
 @method_decorator(login_required, name='dispatch')
 class DeleteTicketE(DeleteView):
     model = TicketE
-    template_name = 'tickets/tickete_delete.html'
+    template_name = 'tickets/tickets_entrada/tickete_delete.html'
     success_url = reverse_lazy('ticketE')
     context_object_name = 'TicketE'
 
@@ -259,7 +259,7 @@ class DeleteTicketE(DeleteView):
 @method_decorator(login_required, name='dispatch')
 class DetailTicketE(DetailView):
     model = TicketE
-    template_name = 'tickets/tickete_detail.html'
+    template_name = 'tickets/tickets_entrada/tickete_detail.html'
     context_object_name = 'TicketE'
 
 # ----------------------------------- #
