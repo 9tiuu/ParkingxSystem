@@ -57,7 +57,7 @@
                         <td>{{ p.date|date:"d-m-y" }}</td>
                         <td>{{ p.entrace_time }}</td>
                         <td>{{ p.exit_time }}</td>
-                        <td>{{ p.min_elapsed }}</td>
+                        <td>{{ p.min_lapsed }}</td>
                         <td>
                             {% if p.state.name == 'Activo' %}                          
                             <p class="state-activo">{{ p.state }}</p>
@@ -68,7 +68,7 @@
                             {% endif %} 
                         </td>
                         <td>${{ p.price }}</td>
-                        <td>${{ p.price_final }}</td>
+                        <td>${{ p.total }}</td>
                         <td class="d-flex gap-2">
                             <a href="{% url 'home' %}" class="btn btn-dark"><i class="bi bi-info-circle"></i></a>
                             {% if request.user.rol.name != 'Cajero' %}

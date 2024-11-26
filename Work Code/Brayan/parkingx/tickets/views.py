@@ -271,16 +271,13 @@ class TicketSView(View):
     template_name = 'tickets/tickets_salida/ticketsalida.html'
 
     def get(self, request):
-        # Mostrar el formulario y la lista de tickets
+
         form = TicketSForm
         tickets = TicketSalida.objects.all()
-        return render(request, self.template_name, {
-            'form': form,
-            'TicketS': tickets
-        })
+        return render(request, self.template_name, {'form': form,'TicketS': tickets})
 
     def post(self, request):
-        # Procesar el formulario
+
         form = TicketSForm(request.POST)
         if form.is_valid():
             patente = form.cleaned_data.get('patente')
@@ -289,12 +286,19 @@ class TicketSView(View):
             if not ticket_e:
                 messages.error(request, 'No se encontró un ticket de entrada con esta patente.')
 
+            exit_datetime = datetime.combine(datetime.today(), datetime.now().time().replace(second=0, microsecond=0))
+            entrace_datetime = datetime.combine(ticket_e.date, ticket_e.entrace_time)
+            raw_price = ((exit_datetime - entrace_datetime).total_seconds() // 60) * 20
+            Price = (raw_price // 20) * 20
+
             ticket_s = TicketSalida(
-                date=ticket_e.date,
-                entrace_time=ticket_e.entrace_time,
-                patente=ticket_e.patente,
-                price=ticket_e.price,
-                exit_time = datetime.now().time().replace(second=0, microsecond=0)
+                date = ticket_e.date,
+                entrace_time = ticket_e.entrace_time,
+                patente = ticket_e.patente,
+                price = ticket_e.price,
+                exit_time = exit_datetime.time(),
+                min_lapsed = (exit_datetime - entrace_datetime).total_seconds() // 60, 
+                total = Price
             )
 
             ticket_s.save()
@@ -303,10 +307,7 @@ class TicketSView(View):
         else:
 
             tickets = TicketSalida.objects.all()
-            return render(request, self.template_name, {
-                'form': form,
-                'TicketS': tickets
-            })
+            return render(request, self.template_name, {'form': form,'TicketS': tickets})
         
 @method_decorator(login_required, name='dispatch')    
 class UpdateTicketS(UpdateView):
