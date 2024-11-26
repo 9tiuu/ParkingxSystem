@@ -1,0 +1,23 @@
+{% extends 'tickets/base.html' %}
+
+{% block content %}
+
+<div class="p-4">
+    <h2>Detalle Ticket</h2>
+    <p class="mb-2">Plantilla temporal</p>
+    <p class="d-lg-none" id="patente">{{ TicketE.patente }}</p>
+    <ul>
+        <li id="d1">ID: {{ TicketE.id }}</li>
+        <li id="d2">Patente: {{ TicketE.patente }}</li>
+        <li id="d3">Fecha: {{ TicketE.date|date:'d-m-y' }}</li>
+        <li id="d4">Hr Ingreso: {{ TicketE.entrace_time }}</li>
+        <li id="d5">Estado: {{ TicketE.state }}</li>
+        <li id="d6">Precio: {{ TicketE.price }}</li>
+        {% load static %}
+        <img src="{% static 'tickets/img/qrcode.png' %}" alt="" width="10%" id="d7">
+    </ul>
+    <button id="mypdf" class="btn btn-success">PDF test</button>
+    <a href="{% url 'ticketE' %}" class="btn btn-dark mx-2">Volver atrás</a>
+</div>
+
+{% endblock %}

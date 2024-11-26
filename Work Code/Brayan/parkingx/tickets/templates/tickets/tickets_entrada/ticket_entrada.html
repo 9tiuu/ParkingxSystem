@@ -1,0 +1,74 @@
+{% extends "tickets/base.html" %}
+
+{% block content %}
+
+<div class="p-4">
+    <h2 class="my-2 blue-sys">Gestión de Tickets de Entrada</h2>
+    {% if request.user.rol.name != 'Cajero' %}
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="d-flex flex-wrap gap-3 mt-4 mb-5">
+            {{ form.as_p }}
+
+            <div class="btn-form">
+                <button type="submit" class="btn btn-primary mt-4 mx-2">Crear Ticket</button>
+            </div>
+            
+        </div>
+    </form>
+    {% endif %}
+    <div class="search-content mt-3">
+        <i class="bi bi-search menu-icon"></i>
+        <input type="text" class="search-inpt" placeholder="Buscar Patente vehicular" maxlength="6">
+        <button class="btn btn-primary">Buscar</button>
+    </div>
+    {% if TicketE %}
+        <div class="border-table mt-3">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Patente</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Hr Ingreso</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in TicketE %}
+                    <tr>
+                        <th scope="row">{{ p.id }}</th>
+                        <td>{{ p.patente }}</td>
+                        <td>{{ p.date|date:"d-m-y" }}</td>
+                        <td>{{ p.entrace_time }}</td>
+                        <td>
+                            {% if p.state.name == 'Activo' %}                          
+                            <p class="state-activo">{{ p.state }}</p>
+                            {% elif p.state.name == 'Cerrado' %}  
+                            <p class="state-cerrado">{{ p.state }}</p>
+                            {% elif p.state.name == 'Pagado' %}  
+                            <p class="state-pagado">{{ p.state }}</p>
+                            {% endif %} 
+                        </td>
+                        <td>${{ p.price }}</td>
+                        <td class="d-flex gap-2">
+                            <a href="{% url 'ticketEdetail' p.id %}" class="btn btn-dark"><i class="bi bi-info-circle"></i></a>
+                            <a href="{% url 'ticketEclose' p.id %}" class="btn btn-warning"><i class="bi bi-x-circle"></i></i></a>
+                            {% if request.user.rol.name != 'Cajero' %}
+                            <a href="{% url 'ticketEupdate' p.id %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                            <a href="{% url 'ticketEdelete' p.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                            {% endif %}
+                        </td>
+                    <tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+    <h4 class="mt-4">No existen Tickets registrados...</h4>
+    {% endif %}
+    </div>
+{% endblock %}
