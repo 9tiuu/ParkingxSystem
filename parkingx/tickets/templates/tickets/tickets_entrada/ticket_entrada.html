@@ -9,7 +9,19 @@
         {% csrf_token %}
         
         <div class="d-flex flex-wrap gap-3 mt-4 mb-5">
-            {{ form.as_p }}
+            {% comment %} {{ form.as_p }} {% endcomment %}
+            <div>
+                <label for="id_patente">Patente vehicular:</label>
+                <input type="text" name="patente" class="form-control mt-2" minlength="6" maxlength="6" required="" id="id_patente">            
+            </div>
+            <div class="d-none">
+                <label for="date-form">Fecha:</label>
+                <input type="date" name="date" id="date-form" class="form-control mt-2">               
+            </div>
+            <div class="d-none">
+                <label for="hour-form">Hr Ingreso:</label>
+                <input type="time" name="entrace_time" id="hour-form" class="form-control mt-2">
+            </div>
 
             <div class="btn-form">
                 <button type="submit" class="btn btn-primary mt-4 mx-2">Crear Ticket</button>
@@ -29,12 +41,12 @@
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Patente Vehicular</th>
+                        <th scope="col">Patente</th>
                         <th scope="col">Fecha</th>
                         <th scope="col">Hr Ingreso</th>
                         <th scope="col">Estado</th>
                         <th scope="col">Precio</th>
-                        <th scope="col">Accion</th>
+                        <th scope="col">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,6 +63,8 @@
                             <p class="state-cerrado">{{ p.state }}</p>
                             {% elif p.state.name == 'Pagado' %}  
                             <p class="state-pagado">{{ p.state }}</p>
+                            {% else %}
+                            <p class="state-other">{{ p.state }}</p>
                             {% endif %} 
                         </td>
                         <td>${{ p.price }}</td>

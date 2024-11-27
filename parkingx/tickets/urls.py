@@ -1,6 +1,6 @@
 from django.urls import path
 from tickets import views
-from .views import CreateRol, CreateUsuario, ListUsuario, UpdateUsuario, DeleteUsuario, CreateProtocolo, UpdateProtocolo, DeleteProtocolo, CreateTicketE, UpdateTicketE, DeleteTicketE, DetailTicketE, ListRol, UpdateRol, DeleteRol, ListTicketState, CreateTicketState, UpdateTicketState, DeleteTicketState, CloseTicketE
+from .views import CreateRol, CreateUsuario, ListUsuario, UpdateUsuario, DeleteUsuario, CreateProtocolo, UpdateProtocolo, DeleteProtocolo, CreateTicketE, UpdateTicketE, DeleteTicketE, DetailTicketE, ListRol, UpdateRol, DeleteRol, ListTicketState, CreateTicketState, UpdateTicketState, DeleteTicketState, CloseTicketE, TicketSView, DeleteTicketS, UpdateTicketS, DetailTicketS
 from .views import custom_logout
 from django.contrib.auth.views import LoginView
 
@@ -36,6 +36,12 @@ urlpatterns = [
     path('ticketEDelete/<int:pk>/', DeleteTicketE.as_view(), name='ticketEdelete'),
     path('ticketEDetail/<int:pk>/', DetailTicketE.as_view(), name='ticketEdetail'),
     path('ticketEClose/<int:pk>/', CloseTicketE.as_view(), name='ticketEclose'),
+
+    # ----------------------------------- # TICKETS DE SALIDA
+    path('ticketS/', TicketSView.as_view(), name='ticketS'),
+    path('ticketSUpdate/<int:pk>/', UpdateTicketS.as_view(), name='ticketSupdate'),
+    path('ticketSDelete/<int:pk>/', DeleteTicketS.as_view(), name='ticketSdelete'),
+    path('ticketSDetail/<int:pk>/', DetailTicketS.as_view(), name='ticketSdetail'),
 
     path('logout/', custom_logout, name='logout'),
     path('', LoginView.as_view(), name='login'),

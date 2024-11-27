@@ -11,13 +11,18 @@
     {% load static %}
     <link rel="website icon" href="{% static 'tickets/img/Parkingx-iconlogo.png' %}" type="img/x-icon">
 
+    <!-- Scripts utilizados -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     
-    {% load static %}
+    {% load static %} 
     <link rel="stylesheet" href="{% static 'tickets/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'tickets/css/login.css' %}">
+    
+    
 </head>
 <body>
     
@@ -106,7 +111,7 @@
                 </li>
                 {% if request.user.rol.name != 'Portero' %}
                 <li class="nav-item">
-                    <a class="option nav-link" href="{% url 'home' %}">
+                    <a class="option nav-link" href="{% url 'ticketS' %}">
                         <i class="bi bi-ticket-fill menu-icon"></i>
                         <p class="option-text">Tickets de salida</p>
                     </a>
@@ -208,21 +213,23 @@
     </div>
     
     {% if messages %}
-        {% for message in messages %}
-            <script>
-                Swal.fire({
-                    "title":"¡Felicidades!",
-                    "text":"{{ message }}",
-                    "icon":"success",
-                    "confirmButtonColor":"#0d6efd"
-                })
-            </script>
-        {% endfor %}
-    {% endif %}
+    {% for message in messages %}
+        <script>
+            Swal.fire({
+                "title": "{% if 'error' in message.tags %}¡Error!{% elif 'success' in message.tags %}¡Felicidades!{% else %}Información{% endif %}",
+                "text": "{{ message }}",
+                "icon": "{% if 'error' in message.tags %}error{% elif 'success' in message.tags %}success{% elif 'warning' in message.tags %}warning{% else %}info{% endif %}",
+                "confirmButtonColor": "{% if 'error' in message.tags %}#d33{% elif 'success' in message.tags %}#0d6efd{% elif 'warning' in message.tags %}#f39c12{% else %}#3085d6{% endif %}"
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+
     
 </body>
     {% load static %}
     <script src="{% static 'tickets/js/script.js' %}"></script>
     <script src="{% static 'tickets/js/graphs.js' %}"></script>
     <script src="{% static 'tickets/js/pdf.js' %}"></script>
+    <script src="{% static 'tickets/js/qrcode.js' %}"></script>
 </html>

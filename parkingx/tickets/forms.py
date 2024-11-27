@@ -1,5 +1,5 @@
 from django import forms
-from .models import Usuario, Rol, Protocolo, TicketE, TicketState
+from .models import Usuario, Rol, Protocolo, TicketEntrada, TicketState, TicketSalida
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -74,7 +74,7 @@ class ProtocoloForm(forms.ModelForm):
         
 class TicketEForm(forms.ModelForm): # MODIFICAR ------
     class Meta:
-        model = TicketE
+        model = TicketEntrada
         fields = ['patente', 'date', 'entrace_time']
         labels = {
             'patente': 'Patente vehicular',
@@ -89,7 +89,7 @@ class TicketEForm(forms.ModelForm): # MODIFICAR ------
 
 class TicketEUpdateForm(forms.ModelForm): # MODIFICAR ------
     class Meta:
-        model = TicketE
+        model = TicketEntrada
         fields = ['patente','date','entrace_time']
         labels = {
             'patente': 'Patente',
@@ -104,7 +104,7 @@ class TicketEUpdateForm(forms.ModelForm): # MODIFICAR ------
 
 class TicketEStateForm(forms.ModelForm): # MODIFICAR ------
     class Meta:
-        model = TicketE
+        model = TicketEntrada
         fields = ['state']
         labels = {
             'state': 'Estado'
@@ -124,4 +124,30 @@ class TicketStateForm(forms.ModelForm):
         widgets = {
             'name':forms.TextInput(attrs={'class':'form-control mt-2'}),
             'description':forms.Textarea(attrs={'class':'form-control mt-2'})
+        }
+
+class TicketSForm(forms.ModelForm): # MODIFICAR ------
+    class Meta:
+        model = TicketSalida
+        fields = ['patente']
+        labels = {
+            'patente': 'Patente vehicular'
+        }
+        widgets = {
+            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6})
+        }
+
+class TicketSEditForm(forms.ModelForm): # MODIFICAR ------
+    class Meta:
+        model = TicketSalida
+        fields = ['date', 'entrace_time','exit_time']
+        labels = {
+            'date': 'Fecha',
+            'entrace_time' : 'Hr Ingreso',
+            'exit_time': 'Hr Salida'
+        }
+        widgets = {
+            'date': forms.TextInput(attrs={'type':'date','class': 'form-control mt-2'}),
+            'entrace_time': forms.TimeInput(attrs={'type':'time','class': 'form-control mt-2'}),
+            'exit_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'})
         }

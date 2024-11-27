@@ -105,34 +105,18 @@ nav {
     margin-right: .5rem;
 }
 
-p {
-    margin: 0;
-}
+p { margin: 0; }
 
 .user-info {
     padding: 1rem;
     border-bottom: solid 1px #B7B7B7;
 }
 
-.uf2 {
-    border: none;
-}
-
-.user-data {
-    color: #396af1;
-}
-
-.active {
-    display: flex;
-}
-
-.disabled {
-    display: none;
-}
-
-.asdasd {
-    width: 100%;
-}
+.uf2 { border: none; }
+.user-data { color: #396af1; }
+.active { display: flex; }
+.disabled { display: none; }
+.asdasd { width: 100%; }
 
 .perfil-option {
     text-decoration: none;
@@ -321,6 +305,11 @@ p {
     margin: 0;
 }
 
+.btn-form {
+    display: flex;
+    justify-content: end;
+}
+
 .month-data {
     display: flex;
     justify-content: space-between;
@@ -329,7 +318,7 @@ p {
 }
 
 .state-activo {
-    padding: .1rem 0;
+    padding: .1rem;
     background-color: #03a9f4;
     border-radius: .2rem;
     color: #fff;
@@ -339,7 +328,7 @@ p {
 }
 
 .state-pagado {
-    padding: .1rem 0;
+    padding: .1rem;
     background-color: #009688;
     border-radius: .2rem;
     color: #fff;
@@ -349,8 +338,18 @@ p {
 }
 
 .state-cerrado {
-    padding: .1rem 0;
+    padding: .1rem;
     background-color: #dc3546;
+    border-radius: .2rem;
+    color: #fff;
+    max-width: 60%;
+    display: grid;
+    place-items: center;
+}
+
+.state-other {
+    padding: .1rem;
+    background-color: #2f2f2f;
     border-radius: .2rem;
     color: #fff;
     max-width: 60%;
