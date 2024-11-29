@@ -214,21 +214,27 @@ class DeleteTicketState(UserPassesTestMixin, DeleteView):
 
 @method_decorator(login_required, name='dispatch')    
 class CreateTicketE(CreateView, ListView):
-    model = TicketEntrada
-    form_class = TicketEForm
     template_name = 'tickets/tickets_entrada/ticket_entrada.html'
-    success_url = reverse_lazy('ticketE')
-    context_object_name = 'TicketE'
 
-    def form_valid(self, form):
-        messages.success(self.request, '¡Ticket de Entrada Creado con exito!')
-        return super().form_valid(form)
-    
+    def get(self, request):
+        tickets = TicketEntrada.objects.all()
+        form = TicketEForm()
+        return render(request, self.template_name, {'form': form, 'TicketE': tickets})
+
+    def post(self, request):
+        form = TicketEForm(request.POST)
+        tickets = TicketEntrada.objects.all()
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Ticket de Entrada Creado con éxito!')       
+            return render(request, self.template_name, {'form': form, 'TicketE': tickets})
+        else:
+            return render(request, self.template_name, {'form': form, 'TicketE': tickets})
 
 @method_decorator(login_required, name='dispatch')    
 class UpdateTicketE(UpdateView):
     model = TicketEntrada
-    form_class = TicketEForm # FORMULARIO TEMPORAL, REVISAR REQUERIMIENTOS
+    form_class = TicketEUpdateForm # FORMULARIO TEMPORAL, REVISAR REQUERIMIENTOS
     template_name = 'tickets/tickets_entrada/tickete_update.html'
     success_url = reverse_lazy('ticketE')
 
@@ -286,6 +292,11 @@ class TicketSView(View):
 
             if not ticket_e:
                 messages.error(request, 'No se encontró un ticket de entrada con la patente ingresada.')
+
+            elif ticket_e.state.name != 'Cerrado':
+                messages.error(request, 'El ticket de entrada no está cerrado.')
+                print(ticket_e)
+
             else:
                 exit_datetime = datetime.combine(datetime.today(), datetime.now().time().replace(second=0, microsecond=0))
                 entrace_datetime = datetime.combine(ticket_e.date, ticket_e.entrace_time)
@@ -303,7 +314,7 @@ class TicketSView(View):
                 )
             
                 ticket_s.save()
-                messages.success(request, '¡Ticket de Salida Creado con exito!')
+                messages.success(request, '¡Ticket de Salida Creado con exito!')   
             return self.get(request)
         
         else:

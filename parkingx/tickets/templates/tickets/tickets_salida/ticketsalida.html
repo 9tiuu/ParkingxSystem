@@ -4,7 +4,7 @@
 
 <div class="p-4">
     <h2 class="my-2 blue-sys">Gestión de Tickets de Salida</h2>
-    {% if request.user.rol.name != 'Cajero' %}
+    {% if request.user.rol.name != 'Portero' %}
     <form method="POST">
         {% csrf_token %}
         <div class="mb-5">
@@ -20,7 +20,7 @@
             {% if form.patente.errors %}
             <div class="errors mb-2">
                 {% for error in form.patente.errors %}
-                <p class="text-danger">{{ "La patente ingresada ya existe." }}</p>
+                <p class="text-danger">Ya existe un Ticket de Salida con la Pantente ingresada...</p>
                 {% endfor %}
             </div>
             {% endif %}

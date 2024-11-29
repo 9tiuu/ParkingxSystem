@@ -7,7 +7,7 @@
     <form method="POST" class="d-flex gap-3 row mt-4">
       {% csrf_token %}
       {{ form.as_p }}  
-      <div class="btn-form">
+      <div>
         <button type="submit" class="btn btn-primary">Crear Rol</button>
         <a href="{% url 'listrol' %}" class="btn btn-dark mx-2">Volver atrás</a>
       </div>

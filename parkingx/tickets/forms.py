@@ -90,16 +90,18 @@ class TicketEForm(forms.ModelForm): # MODIFICAR ------
 class TicketEUpdateForm(forms.ModelForm): # MODIFICAR ------
     class Meta:
         model = TicketEntrada
-        fields = ['patente','date','entrace_time']
+        fields = ['patente','date','entrace_time', 'state']
         labels = {
             'patente': 'Patente',
             'date': 'Fecha',
-            'entrace_time': 'Hr Ingreso'
+            'entrace_time': 'Hr Ingreso',
+            'state': 'Estado (Temporal)'
         }
         widgets = {
             'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'maxlength':6}),
             'date': forms.TextInput(attrs={'type':'date', 'class': 'form-control mt-2'}),
-            'entrace_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'})
+            'entrace_time': forms.TimeInput(attrs={'type':'time', 'class': 'form-control mt-2'}),
+            'state': forms.Select(attrs={'class':'form-control mt-2'})
         }
 
 class TicketEStateForm(forms.ModelForm): # MODIFICAR ------

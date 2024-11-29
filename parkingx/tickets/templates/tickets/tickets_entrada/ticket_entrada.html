@@ -6,27 +6,35 @@
     <h2 class="my-2 blue-sys">Gestión de Tickets de Entrada</h2>
     {% if request.user.rol.name != 'Cajero' %}
     <form method="POST">
-        {% csrf_token %}
-        
-        <div class="d-flex flex-wrap gap-3 mt-4 mb-5">
-            {% comment %} {{ form.as_p }} {% endcomment %}
-            <div>
-                <label for="id_patente">Patente vehicular:</label>
-                <input type="text" name="patente" class="form-control mt-2" minlength="6" maxlength="6" required="" id="id_patente">            
-            </div>
-            <div class="d-none">
-                <label for="date-form">Fecha:</label>
-                <input type="date" name="date" id="date-form" class="form-control mt-2">               
-            </div>
-            <div class="d-none">
-                <label for="hour-form">Hr Ingreso:</label>
-                <input type="time" name="entrace_time" id="hour-form" class="form-control mt-2">
-            </div>
+        {% csrf_token %}    
+        <div class="mb-5">
+            <div class="d-flex flex-wrap gap-3 mt-4 mb-3">
+                <div>
+                    <div>
+                        <label for="id_patente">Patente vehicular:</label>
+                        <input type="text" name="patente" class="form-control mt-2" minlength="6" maxlength="6" required="" id="id_patente">            
+                    </div>
+                </div>
+                <div class="d-none">
+                    <label for="date-form">Fecha:</label>
+                    <input type="date" name="date" id="date-form" class="form-control mt-2">               
+                </div>
+                <div class="d-none">
+                    <label for="hour-form">Hr Ingreso:</label>
+                    <input type="time" name="entrace_time" id="hour-form" class="form-control mt-2">
+                </div>
 
-            <div class="btn-form">
-                <button type="submit" class="btn btn-primary mt-4 mx-2">Crear Ticket</button>
+                <div class="btn-form">
+                    <button type="submit" class="btn btn-primary mt-4 mx-2">Crear Ticket</button>
+                </div>
             </div>
-            
+            {% if form.patente.errors %}
+            <div class="errors mb-2">
+                {% for error in form.patente.errors %}
+                <p class="text-danger">Ya existe un Ticket de Entrada con la Pantente ingresada...</p>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </form>
     {% endif %}
