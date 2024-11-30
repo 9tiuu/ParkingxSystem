@@ -1,0 +1,17 @@
+{% extends 'tickets/base.html' %}
+
+{% block content %}
+  <div class="p-4">
+    <h2 class="my-2 blue-sys">Actualizar Rol de usuario</h2>
+
+    <form method="POST" class="d-flex gap-3 row mt-4">
+      {% csrf_token %}
+      {{ form.as_p }}  
+      <div>
+        <button type="submit" class="btn btn-success">Confirmar cambios</button>
+        <a href="{% url 'listrol' %}" class="btn btn-primary mx-2">Cancelar</a>
+      </div>
+    </form>
+
+  </div>
+{% endblock %}
