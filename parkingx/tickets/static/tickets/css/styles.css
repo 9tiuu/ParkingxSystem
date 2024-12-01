@@ -44,6 +44,11 @@ nav {
     transition: .3s;
 }
 
+.selected {
+    background-color: var(--color1);
+    color: white;
+}
+
 .menu {
     padding: 1rem;
     gap: 1rem;

@@ -4,19 +4,32 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 
 class UsuarioForm(UserCreationForm):
-    username = forms.CharField(max_length=50, label='Username', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}), help_text="")
-    name = forms.CharField(max_length=50, label='Nombre', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}))
-    last_name = forms.CharField(max_length=50, label='Apellido', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}))
-    rut = forms.CharField(max_length=10, label='RUT', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}))
-    email = forms.EmailField(max_length=254, label='Correo Electrónico', widget=forms.EmailInput(attrs={'class': 'form-control form-crud'}))
-    rol = forms.ModelChoiceField(queryset=Rol.objects.all(), widget=forms.Select(attrs={'class': 'form-control form-crud'}))
-    avatar = forms.ImageField(label='Avatar', required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control form-crud'}))
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control form-crud'}), help_text="")
-    password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control form-crud'}), help_text="")
-
     class Meta:
         model = Usuario
-        fields = ['username', 'name', 'last_name', 'rut', 'email', 'rol', 'avatar']
+        fields = ['username', 'name', 'last_name', 'rut', 'email', 'rol', 'avatar','password1', 'password2']
+        labels = {
+            'username': 'Nombre de Usuario',
+            'name': 'Nombre',
+            'last_name': 'Apellido',
+            'rut': 'RUT',
+            'email': 'Correo electrónico',
+            'rol': 'Rol de Usuario',
+            'avatar':'Foto de Usuario',
+            'password1':'Contraseña',
+            'password2':'Confirmar Contraseña'
+        }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'required': ''}),
+            'name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'required': ''}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'required': ''}),
+            'rut': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':10, 'maxlength':10, 'required': ''}),
+            'email': forms.EmailInput(attrs={'class': 'form-control form-crud'}),
+            'rol': forms.Select(attrs={'class': 'form-control form-crud'}),
+            'avatar':forms.ClearableFileInput(attrs={'class': 'form-control form-crud'}),
+            'password1':forms.PasswordInput(attrs={'class': 'form-control form-crud'}),
+            'password2':forms.PasswordInput(attrs={'class': 'form-control form-crud'})
+        }
+    
 
 class RolForm(forms.ModelForm):
     class Meta:
@@ -27,25 +40,35 @@ class RolForm(forms.ModelForm):
             'description': 'Descripción'
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control mt-2'}),
-            'description': forms.Textarea(attrs={'class': 'form-control mt-2', 'rows': 3}),
+            'name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2, 'maxlength':45, 'required': ''}),
+            'description': forms.Textarea(attrs={'class': 'form-control mt-2', 'rows': 3, 'minlength':2, 'required': ''}),
         }
 
 class UserUpdateForm(UserChangeForm):
-    username = forms.CharField(max_length=50, label='Username', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}), help_text="")
-    name = forms.CharField(max_length=50, label='Nombre', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}))
-    last_name = forms.CharField(max_length=50, label='Apellido', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}))
-    rut = forms.CharField(max_length=10, label='RUT', widget=forms.TextInput(attrs={'class': 'form-control form-crud'}))
-    email = forms.EmailField(max_length=254, label='Correo Electrónico', widget=forms.EmailInput(attrs={'class': 'form-control form-crud'}))
-    rol = forms.ModelChoiceField(queryset=Rol.objects.all(), widget=forms.Select(attrs={'class': 'form-control form-crud'}))
-    avatar = forms.ImageField(label='Avatar', required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control form-crud'}))
-
     class Meta:
         model = Usuario
         fields = ['username', 'name', 'last_name', 'rut', 'email', 'rol', 'avatar']
+        labels = {
+            'username': 'Nombre de Usuario',
+            'name': 'Nombre',
+            'last_name': 'Apellido',
+            'rut': 'RUT',
+            'email': 'Correo electrónico',
+            'rol': 'Rol de Usuario',
+            'avatar':'Foto de Usuario'
+        }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
+            'name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
+            'rut': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':10, 'maxlength':10, 'required': ''}),
+            'email': forms.EmailInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
+            'rol': forms.Select(attrs={'class': 'form-control form-crud'}),
+            'avatar':forms.ClearableFileInput(attrs={'class': 'form-control form-crud'})
+
+        }
 
 class ProtocoloForm(forms.ModelForm):
-    
     class Meta:
         model = Protocolo
         fields = ['name', 'last_name', 'rut', 'number', 'patente', 'hora_ingreso', 'hora_salida', 'date', 'description']
@@ -61,16 +84,23 @@ class ProtocoloForm(forms.ModelForm):
             'description': 'Descripción'
         }
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2}),
-            'rut': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':10}),
-            'number': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':9}),
-            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6}),
+            'name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2, 'maxlength':45, 'required': ''}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2, 'maxlength':45, 'required': ''}),
+            'rut': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':10, 'maxlength':10, 'required': ''}),
+            'number': forms.NumberInput(attrs={'class': 'form-control mt-2', 'minlength':9, 'required': ''}),
+            'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'required': ''}),
             'hora_ingreso': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control mt-2'}),
             'hora_salida': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control mt-2'}),
             'date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control mt-2'}),
-            'description': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2}),
+            'description': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2, 'required': ''}),
         }
+
+    def clean_patente(self):
+        patente = self.cleaned_data.get('patente')
+        if patente:
+            return patente.upper()
+        else:
+            return patente
         
 class TicketEForm(forms.ModelForm): # MODIFICAR ------
     class Meta:

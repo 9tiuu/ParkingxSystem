@@ -9,7 +9,7 @@
         {% csrf_token %}      
         <div>
             <label for="id_username" class="mb-2 blue-sys">Nombre de usuario</label>
-            <input type="text" name="username" id="id_username" value="{{ form.username.value|default:"" }}" class="form-control form-crud" required>
+            <input type="text" name="username" id="id_username" value="{{ form.username.value|default:"" }}" class="form-control form-crud" minlength="2" maxlength="45" required>
 
             {% if form.username.errors %}
             <div class="errors mb-2">
@@ -22,7 +22,7 @@
         <div class="dual-form">
             <div class="w-100">
                 <label for="id_username" class="mb-2 blue-sys">Nombre</label>
-                <input type="text" name="name" id="id_name" value="{{ form.name.value|default:"" }}" class="form-control form-crud" required>
+                <input type="text" name="name" id="id_name" value="{{ form.name.value|default:"" }}" class="form-control form-crud" minlength="2" maxlength="45" required>
 
                 {% if form.name.errors %}
                 <div class="errors mb-2">
@@ -34,7 +34,7 @@
             </div>
             <div class="w-100">
                 <label for="last_name" class="mb-2 blue-sys">Apellido</label>
-                <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:"" }}" class="form-control form-crud" required>
+                <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:"" }}" class="form-control form-crud" minlength="2" maxlength="45" required>
                 
                 {% if form.last_name.errors %}
                 <div class="errors mb-2">
@@ -47,7 +47,7 @@
         </div>
         <div>
             <label for="email" class="mb-2 blue-sys">Correo</label>
-            <input type="email" name="email" id="id_email" value="{{ form.email.value|default:"" }}" class="form-control form-crud" required>
+            <input type="email" name="email" id="id_email" value="{{ form.email.value|default:"" }}" class="form-control form-crud" minlength="4" maxlength="45" required>
 
             {% if form.email.errors %}
                 <div class="errors mb-2">
@@ -93,7 +93,7 @@
         <div class="dual-form">
             <div class="w-100">
                 <label for="id_password1" class="mb-2 blue-sys">Contraseña</label>
-                <input type="password" name="password1" id="id_password1" value="{{ form.passoword1.value|default:"" }}" class="form-control form-crud" required>
+                <input type="password" name="password1" id="id_password1" value="{{ form.passoword1.value|default:"" }}" class="form-control form-crud" minlength="8" required>
 
                 {% if form.password1.errors %}
                 <div class="errors">
@@ -106,7 +106,7 @@
 
             <div class="w-100">
                 <label for="id_password2" class="mb-2 blue-sys">Confirmar contraseña</label>
-                <input type="password" name="password2" id="id_password2" value="{{ form.passoword2.value|default:"" }}" class="form-control form-crud" required>
+                <input type="password" name="password2" id="id_password2" value="{{ form.passoword2.value|default:"" }}" class="form-control form-crud" minlength="8" required>
             </div>
 
         </div>

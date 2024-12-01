@@ -122,6 +122,8 @@ class CreateUsuario(UserPassesTestMixin, CreateView):
         messages.success(self.request, '¡Usuario Registrado con exito!')
         return super().form_valid(form)
     
+    
+    
 @method_decorator(login_required, name='dispatch')    
 class ListUsuario(ListView):
     model = Usuario

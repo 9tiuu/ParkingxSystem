@@ -7,7 +7,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Rol(models.Model):
     # ID proporcionado por django
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     description = models.TextField()
 
     def __str__(self) -> str:
@@ -17,7 +17,7 @@ class Usuario(AbstractUser):
     # ID proporcionado por django
     name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    rut = models.CharField(max_length=10)
+    rut = models.CharField(max_length=10, unique=True)
     email = models.EmailField(max_length=254, unique=True)
     # Contraseña proporcionada por django
     rol = models.ForeignKey(Rol, on_delete=models.RESTRICT)
@@ -28,7 +28,7 @@ class Usuario(AbstractUser):
     
 class TicketState(models.Model):
     # ID proporcionado por django
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     description = models.TextField()
 
     def __str__(self) -> str:
