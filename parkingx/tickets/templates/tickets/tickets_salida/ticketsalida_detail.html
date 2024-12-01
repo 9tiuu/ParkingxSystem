@@ -6,7 +6,7 @@
     <h2>Detalle Ticket</h2>
     <p class="mb-2">Plantilla temporal</p>
     <p class="d-lg-none" id="patente">{{ TicketS.patente }}</p>
-    <input type="text" class="d-lg-none" id="state" value="{{ TicketS.state }}">
+    <input type="text" class="d-lg-none" id="state" value="ID: {{ TicketS.id }} | Patente: {{ TicketS.patente }} | Fecha: {{ TicketS.date }} | Hr Ingreso: {{ TicketS.entrace_time }} | Hr Salida: {{ TicketS.exit_time }} | Minutos: {{ TicketS.min_lapsed }} | Estado: {{ TicketS.state }} | Precio: {{ TicketS.price }} | Total: {{ TicketS.total }}">
     <ul>
         <li id="d7">ID: {{ TicketS.id }}</li>
         <li id="d8">Patente: {{ TicketS.patente }}</li>
