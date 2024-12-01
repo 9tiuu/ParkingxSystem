@@ -1,0 +1,15 @@
+{% extends "tickets/base.html" %}
+
+{% block content  %}
+
+<div class="message-content">
+    <h3>¿Eliminar usuario: <b class="blue-sys">{{ usuario.name }} {{ usuario.last_name }}</b>?</h3>
+    <p class="text-secondary mb-4">Al confirmar, se eliminará al usuario de manera definitiva del sistema...</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Eliminar" class="btn btn-danger mx-3">
+        <a href="{% url 'userlist' %}" class="btn btn-primary">Cancelar</a>
+    </form>
+</div>
+
+{% endblock  %}
