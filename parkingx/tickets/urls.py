@@ -12,6 +12,7 @@ urlpatterns = [
     path('listrol/', ListRol.as_view(), name='listrol'),
     path('updaterol/<int:pk>/', UpdateRol.as_view(), name='updaterol'),
     path('deleterol/<int:pk>/', DeleteRol.as_view(), name='deleterol'),
+    path('findrol/', views.FindRol, name='findrol'),
 
     # ----------------------------------- # PRTOCOLOS
     path('protocolos/', CreateProtocolo.as_view(), name='protocolos'),

@@ -29,37 +29,61 @@ def Home(request):
 # ----------------------------------- # ROLES
 
 @method_decorator(login_required, name='dispatch')
-class CreateRol(CreateView):
+class CreateRol(UserPassesTestMixin, CreateView):
     model = Rol
     form_class = RolForm
     template_name = 'tickets/roles/roluser_create.html'
     success_url = reverse_lazy('listrol')
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Rol Agregado con exito!')
         return super().form_valid(form)
     
     
-class ListRol(ListView):
+class ListRol(UserPassesTestMixin, ListView):
     model = Rol
     template_name = 'tickets/roles/roluser_list.html'
     context_object_name = 'rol'
 
-class UpdateRol(UpdateView):
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
+
+def FindRol(request):
+    response = request.GET.get('find-rol')
+    if response:
+        roluser = Rol.objects.filter(name__icontains = response)
+    else:
+        roluser = Rol.objects.all()   
+    return render(request, 'tickets/roles/rolser_find.html', {'rol':roluser, 'response':response})
+
+class UpdateRol(UserPassesTestMixin, UpdateView):
     model = Rol
     form_class = RolForm
     template_name = 'tickets/roles/roluser_update.html'
     success_url = reverse_lazy('listrol')
 
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
+
     def form_valid(self, form):
         messages.success(self.request, '¡Rol Actualizado con exito!')
         return super().form_valid(form)
 
-class DeleteRol(DeleteView):
+class DeleteRol(UserPassesTestMixin, DeleteView):
     model = Rol
     template_name = 'tickets/roles/roluser_delete.html'
     context_object_name = 'rol'
     success_url = reverse_lazy('listrol')
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Rol Eliminado con exito!')
@@ -68,37 +92,47 @@ class DeleteRol(DeleteView):
 # ----------------------------------- # PROTOCOLOS
 
 @method_decorator(login_required, name='dispatch')    
-class CreateProtocolo(CreateView, ListView):
+class CreateProtocolo(UserPassesTestMixin, CreateView, ListView):
     model = Protocolo
     form_class = ProtocoloForm
     template_name = 'tickets/protocolos/protocolo.html'
     success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
 
-    def form_valid(self, form):
-        return super().form_valid(form)
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
     
     def form_valid(self, form):
         messages.success(self.request, '¡Protocolo Agregado con exito!')
         return super().form_valid(form)
+    
 
 @method_decorator(login_required, name='dispatch')    
-class UpdateProtocolo(UpdateView):
+class UpdateProtocolo(UserPassesTestMixin, UpdateView):
     model = Protocolo
     form_class = ProtocoloForm
     template_name = 'tickets/protocolos/protocolo_update.html'
     success_url = reverse_lazy('protocolos')
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Protocolo Actualizado con exito!')
         return super().form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
-class DeleteProtocolo(DeleteView):
+class DeleteProtocolo(UserPassesTestMixin, DeleteView):
     model = Protocolo
     template_name = 'tickets/protocolos/protocolo_delete.html'
     success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Protocolo Eliminado con exito!')
