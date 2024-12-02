@@ -125,33 +125,41 @@ class CreateUsuario(UserPassesTestMixin, CreateView):
     
     
 @method_decorator(login_required, name='dispatch')    
-class ListUsuario(ListView):
+class ListUsuario(UserPassesTestMixin, ListView):
     model = Usuario
     template_name = 'tickets/usuarios/userlist.html'
     context_object_name = 'usersys'
 
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
+
 @method_decorator(login_required, name='dispatch')
-class UpdateUsuario(UpdateView):
+class UpdateUsuario(UserPassesTestMixin, UpdateView):
     model = Usuario
     form_class = UserUpdateForm
     template_name = 'tickets/usuarios/userupdate.html'
     success_url = reverse_lazy('userlist')
     context_object_name = 'usuario'
 
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
+
     def form_valid(self, form):
         messages.success(self.request, '¡Usuario Actualizado con exito!')
         return super().form_valid(form)
 
-    # def get_object(self, queryset=None):
-    #     pk = self.kwargs.get('pk')
-    #     return Usuario.objects.get(pk=pk)
-
 @method_decorator(login_required, name='dispatch')    
-class DeleteUsuario(DeleteView):
+class DeleteUsuario(UserPassesTestMixin, DeleteView):
     model = Usuario
     template_name = 'tickets/usuarios/userdelete.html'
     success_url = reverse_lazy('userlist')
     context_object_name = 'usuario'
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Usuario Eliminado con exito!')
@@ -160,11 +168,15 @@ class DeleteUsuario(DeleteView):
 # ----------------------------------- # ESTADOS DE TICKETS
 
 @method_decorator(login_required, name='dispatch')
-class ListTicketState(ListView):
+class ListTicketState(UserPassesTestMixin, ListView):
     model = TicketState
     form_class = TicketStateForm
     template_name = 'tickets/estados/ticketstate.html'
     context_object_name = 'Estado'
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador']
     
 @method_decorator(login_required, name='dispatch')
 class CreateTicketState(UserPassesTestMixin, CreateView):
@@ -215,7 +227,7 @@ class DeleteTicketState(UserPassesTestMixin, DeleteView):
 # ----------------------------------- # TICKETS DE ENTRADA
 
 @method_decorator(login_required, name='dispatch')    
-class CreateTicketE(CreateView, ListView):
+class CreateTicketE(View):
     template_name = 'tickets/tickets_entrada/ticket_entrada.html'
 
     def get(self, request):
@@ -234,11 +246,15 @@ class CreateTicketE(CreateView, ListView):
             return render(request, self.template_name, {'form': form, 'TicketE': tickets})
 
 @method_decorator(login_required, name='dispatch')    
-class UpdateTicketE(UpdateView):
+class UpdateTicketE(UserPassesTestMixin, UpdateView):
     model = TicketEntrada
     form_class = TicketEUpdateForm # FORMULARIO TEMPORAL, REVISAR REQUERIMIENTOS
     template_name = 'tickets/tickets_entrada/tickete_update.html'
     success_url = reverse_lazy('ticketE')
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador', 'Portero']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Ticket de Entrada Editado con exito!')
@@ -257,11 +273,15 @@ class CloseTicketE(UpdateView):
         return super().form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
-class DeleteTicketE(DeleteView):
+class DeleteTicketE(UserPassesTestMixin, DeleteView):
     model = TicketEntrada
     template_name = 'tickets/tickets_entrada/tickete_delete.html'
     success_url = reverse_lazy('ticketE')
     context_object_name = 'TicketE'
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador', 'Portero']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Ticket de Entrada Eliminado con exito!')
@@ -276,17 +296,19 @@ class DetailTicketE(DetailView):
 # ----------------------------------- # TICKETS DE SALIDA
 
 @method_decorator(login_required, name='dispatch')
-class TicketSView(View):
+class TicketSView(UserPassesTestMixin, View):
     template_name = 'tickets/tickets_salida/ticketsalida.html'
 
-    def get(self, request):
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador', 'Cajero']
 
+    def get(self, request):
         form = TicketSForm
         tickets = TicketSalida.objects.all()
         return render(request, self.template_name, {'form': form,'TicketS': tickets})
 
     def post(self, request):
-
         form = TicketSForm(request.POST)
         if form.is_valid():
             patente = form.cleaned_data.get('patente')
@@ -324,32 +346,44 @@ class TicketSView(View):
             return render(request, self.template_name, {'form': form,'TicketS': tickets})
         
 @method_decorator(login_required, name='dispatch')    
-class UpdateTicketS(UpdateView):
+class UpdateTicketS(UserPassesTestMixin, UpdateView):
     model = TicketSalida
     form_class = TicketSEditForm # FORMULARIO TEMPORAL, REVISAR REQUERIMIENTOS
     template_name = 'tickets/tickets_salida/ticketsalida_update.html'
     success_url = reverse_lazy('ticketS')
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador', 'Cajero']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Ticket de Salida Editado con exito!')
         return super().form_valid(form)
     
 @method_decorator(login_required, name='dispatch')
-class DeleteTicketS(DeleteView):
+class DeleteTicketS(UserPassesTestMixin, DeleteView):
     model = TicketSalida
     template_name = 'tickets/tickets_salida/ticketsalida_delete.html'
     success_url = reverse_lazy('ticketS')
     context_object_name = 'TicketS'
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador', 'Cajero']
 
     def form_valid(self, form):
         messages.success(self.request, '¡Ticket de Salida Eliminado con exito!')
         return super().form_valid(form)
     
 @method_decorator(login_required, name='dispatch')
-class DetailTicketS(DetailView):
+class DetailTicketS(UserPassesTestMixin, DetailView):
     model = TicketSalida
     template_name = 'tickets/tickets_salida/ticketsalida_detail.html'
     context_object_name = 'TicketS'
+
+    def test_func(self):
+        rol = self.request.user.rol.name
+        return rol in ['root', 'Administrador', 'Cajero']
 
 # ----------------------------------- #
 
