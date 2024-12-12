@@ -152,6 +152,7 @@ class CreateUsuario(UserPassesTestMixin, CreateView):
         return rol in ['root', 'Administrador']
     
     def form_valid(self, form):
+        # nombre = form.instance.name 
         user = form.save()
         messages.success(self.request, '¡Usuario Registrado con exito!')
         return super().form_valid(form)

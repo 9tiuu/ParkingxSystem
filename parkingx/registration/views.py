@@ -27,6 +27,9 @@ class ProfileUpdateView(UpdateView):
     success_url = reverse_lazy('profile')
     context_object_name = 'profile'
 
+    def get_object(self):
+        return self.request.user
+
     def form_valid(self, form):
         messages.success(self.request, '¡Perfil de Usuario Actualizado!')
         return super().form_valid(form)

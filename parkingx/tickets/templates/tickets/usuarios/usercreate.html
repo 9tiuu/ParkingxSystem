@@ -6,7 +6,8 @@
         <h2 class="text-primary mb-2">Crear nuevo Usuario</h2>
     </div>
     <form method="POST" enctype="multipart/form-data" class="users-c-form">
-        {% csrf_token %}      
+        {% csrf_token %}  
+            
         <div>
             <label for="id_username" class="mb-2 blue-sys">Nombre de usuario</label>
             <input type="text" name="username" id="id_username" value="{{ form.username.value|default:"" }}" class="form-control form-crud" minlength="2" maxlength="45" required>
