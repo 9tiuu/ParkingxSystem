@@ -1,0 +1,52 @@
+{% extends "tickets/base.html" %}
+
+{% block content %}
+
+<div class="user-list-content">
+    <h2 class="mb-4 blue-sys">Gestión de Roles de Usuario</h2>
+    <div class="mb-3 user-template-actions">
+        <form action="{% url 'findrol' %}" method="get">  
+            {% csrf_token %} 
+            <div class="search-content">
+                <i class="bi bi-search menu-icon"></i>        
+                <input type="text" name="find-rol" class="search-inpt" placeholder="Buscar Rol de usuario" maxlength="10">
+                <button class="btn btn-primary" type="submit">Buscar</button> 
+            </div>
+        </form> 
+        <div class="d-flex gap-2">
+            <a href="{% url 'createrol' %}" class="btn btn-primary">Crear Roles</a>
+        </div>
+    </div>
+    {% if rol %}
+    <div class="border-table">
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rol %}
+                <tr>
+                    <th scope="row">{{ r.id }}</th>
+                    <td>{{ r.name }}</td>
+                    <td>{{ r.description }}</td>
+                    <td class="d-flex gap-2">
+                        <a href="{% url 'updaterol' r.id %}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                        <a href="{% url 'deleterol' r.id %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
+                    </td>
+                <tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <h4>No existen roles registrados...</h4>
+    {% endif %}
+</div>
+
+{% endblock  %}
+

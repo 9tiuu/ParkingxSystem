@@ -1,0 +1,71 @@
+{% extends 'tickets/base.html' %}
+
+{% block content %}
+
+<div class="p-4">
+    <h2>Detalle Ticket</h2>
+    <p class="mb-2">Plantilla temporal</p>
+    <p class="d-lg-none" id="patente">{{ TicketS.patente }}</p>
+    <input type="text" class="d-lg-none" id="state" value="ID: {{ TicketS.id }} | Patente: {{ TicketS.patente }} | Fecha: {{ TicketS.date }} | Hr Ingreso: {{ TicketS.entrace_time }} | Hr Salida: {{ TicketS.exit_time }} | Minutos: {{ TicketS.min_lapsed }} | Estado: {{ TicketS.state }} | Precio: {{ TicketS.price }} | Total: {{ TicketS.total }}">
+    <ul>
+        <li id="d7">ID: {{ TicketS.id }}</li>
+        <li id="d8">Patente: {{ TicketS.patente }}</li>
+        <li id="d9">Fecha: {{ TicketS.date|date:'d-m-y' }}</li>
+        <li id="d10">Hr Ingreso: {{ TicketS.entrace_time }}</li>
+        <li id="d11">Hr Salida: {{ TicketS.exit_time }}</li>
+        <li id="d12">Minutos: {{ TicketS.min_lapsed }}</li>
+        <li id="d13">Estado: {{ TicketS.state }}</li>
+        <li id="d14">Precio: ${{ TicketS.price }}</li>
+        <li id="d15">Total: ${{ TicketS.total }}</li>
+        
+        <div id="qrcode" class="mt-2"></div>
+        
+    </ul>
+    <button id="mypdf" class="btn btn-success">PDF test</button>
+    <a href="{% url 'ticketS' %}" class="btn btn-dark mx-2">Volver atrás</a>
+</div>
+
+<script>
+    const id = document.getElementById('d7').innerHTML;
+    const patente = document.getElementById('d8').innerHTML;
+    const fechat = document.getElementById('d9').innerHTML;
+    const ingreso = document.getElementById('d10').innerHTML;
+    const salida = document.getElementById('d11').innerHTML;
+    const minutos = document.getElementById('d12').innerHTML;
+    const estado = document.getElementById('d13').innerHTML;
+    const precio = document.getElementById('d14').innerHTML;
+    const total = document.getElementById('d15').innerHTML;
+    const qrcode = document.getElementById('qrcode');
+        
+    document.getElementById("mypdf").addEventListener("click", () => {
+        const patenteValue = document.getElementById('patente').innerHTML;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFontSize(20);
+            doc.text("Detalle de Ticket de Salida", 10, 10);
+
+        doc.setFontSize(12);
+            doc.text(id, 10, 20);
+            doc.text(patente, 10, 30);
+            doc.text(fechat, 10, 40);
+            doc.text(ingreso, 10, 50);
+            doc.text(salida, 10, 60);
+            doc.text(minutos, 10, 70);
+            doc.text(estado, 10, 80);
+            doc.text(precio, 10, 90);
+            doc.text(total, 10, 100);
+
+        html2canvas(qrcode, {
+            onrendered: function(canvas) {
+                const imgData = canvas.toDataURL("image/png"); // Convertir el canvas a una imagen en base64
+                doc.addImage(imgData, 'PNG', 10, 110, 0, 0); 
+                
+                const TicketFileName = `DataTicketSalida-${patenteValue}.pdf`;
+                doc.save(TicketFileName);
+            }
+        });       
+    });
+</script>
+
+{% endblock %}
