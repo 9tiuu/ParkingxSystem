@@ -127,10 +127,25 @@
             <div class="p-4">
                 <h5 class="option-text">¡Hola {{ request.user.name }}!</h5>
                 <h2 class="my-2 blue-sys">Bienvenido a Parkingx</h2>
+    
                 <div class="home-bg mt-3">
-                    <!-- <canvas id="ticketgraph" class="ticket-graph"></canvas> -->
+                 
                     <div class="graphs-content">
                         <canvas id="ticketgraph" class="ticket-graph"></canvas>
+                        <ul>
+                            <li id="ene" class="d-none">{{ ene }}</li>
+                            <li id="feb" class="d-none">{{ feb }}</li>
+                            <li id="mar" class="d-none">{{ mar }}</li>
+                            <li id="abr" class="d-none">{{ abr }}</li>
+                            <li id="may" class="d-none">{{ may }}</li>
+                            <li id="jun" class="d-none">{{ jun }}</li>
+                            <li id="jul" class="d-none">{{ jul }}</li>
+                            <li id="ago" class="d-none">{{ ago }}</li>
+                            <li id="sep" class="d-none">{{ sep }}</li>
+                            <li id="oct" class="d-none">{{ oct }}</li>
+                            <li id="nov" class="d-none">{{ nov }}</li>
+                            <li id="dic" class="d-none">{{ dic }}</li>
+                        </ul>
                     </div>
                     
                     <div class="graphs-content date-time-content">
@@ -142,7 +157,7 @@
                     
                     <div class="graphs-content">
                         <div class="graph-title mb-3">
-                            <h5 class="blue-sys mb-2">DEFINIR TITULO</h5>
+                            <h5 class="blue-sys mb-2">Ingreso Recolectado (No Terminado)</h5>
                         </div>
                         <div class="graph-data">
                             <canvas id="ticketgraph3" class="money-graph"></canvas>
@@ -202,7 +217,16 @@
                     </div>             
                     
                     <div class="graphs-content">
-                        
+                        <div class="graph-title mb-3">
+                            <h5 class="blue-sys mb-2">Día de la Semana más Frecuente</h5>
+                        </div>
+                        <div class="graph-data">
+                            <canvas id="ticketgraph4" class="money-graph"></canvas>
+                            <div class="w-100 p-1">
+                                <p class="fs-1" id="daydata">{{ dia_frecuente }}</p>
+                                <p>Con <b id="frecdata" class=" text-primary">{{ frecuencia }}</b> tickets registrados.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 

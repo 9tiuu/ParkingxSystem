@@ -7,10 +7,118 @@
         {% csrf_token %}
         
         <div class="d-flex flex-wrap gap-3 mt-4 mb-5">
-            {{ form.as_p }}
+            <div class="d-flex flex-wrap gap-3 mb-2">
+                <div class="form-group">
+                    <label for="id_name">Nombre:</label>
+                    {{ form.name }} 
+                    {% if form.name.errors %}
+                        <div class="text-danger">
+                            {% for error in form.name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_last_name">Apellido:</label>
+                    {{ form.last_name }} 
+                    {% if form.last_name.errors %}
+                        <div class="text-danger">
+                            {% for error in form.last_name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_rut">RUT:</label>
+                    {{ form.rut }} 
+                    {% if form.rut.errors %}
+                        <div class="text-danger">
+                            {% for error in form.rut.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_number">Número de teléfono:</label>
+                    {{ form.number }} 
+                    {% if form.number.errors %}
+                        <div class="text-danger">
+                            {% for error in form.number.errors %}
+                                <p>Ingresa un número valido ejemplo: 966377046</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_patente">Patente Vehicular:</label>
+                    {{ form.patente }} 
+                    {% if form.patente.errors %}
+                        <div class="text-danger">
+                            {% for error in form.patente.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_hora_ingreso">Hora de Ingreso:</label>
+                    {{ form.hora_ingreso }} 
+                    {% if form.hora_ingreso.errors %}
+                        <div class="text-danger">
+                            {% for error in form.hora_ingreso.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_hora_salida">Hora de Salida:</label>
+                    {{ form.hora_salida }} 
+                    {% if form.hora_salida.errors %}
+                        <div class="text-danger">
+                            {% for error in form.hora_salida.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_date">Fecha:</label>
+                    {{ form.date }} 
+                    {% if form.date.errors %}
+                        <div class="text-danger">
+                            {% for error in form.date.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+    
+                <div class="form-group">
+                    <label for="id_description">Descripción:</label>
+                    {{ form.description }} 
+                    {% if form.description.errors %}
+                        <div class="text-danger">
+                            {% for error in form.description.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
             
             <div class="btn-form">
-                <button type="submit" class="btn btn-primary mt-4 mx-2">Crear Protocolo</button>
+                <button type="submit" class="btn btn-primary">Crear Protocolo</button>
             </div>
         </div>
     </form>

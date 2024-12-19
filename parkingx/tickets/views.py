@@ -1,9 +1,11 @@
+from django.forms import ValidationError
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views import View
+import re
 
 from django.contrib import messages
 from datetime import datetime
@@ -20,11 +22,95 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 
 # Create your views here.
 
+def validar_rut(rut):
+    rut = rut.replace(".", "").upper()
+    match = re.match(r"^(\d{1,8})[-]([0-9Kk])$", rut)
+
+    if not match:
+        raise ValidationError("El RUT tiene un formato incorrecto")
+    return True
+
 # ----------------------------------- # HOME
 
 @login_required
 def Home(request):
-    return render(request, 'tickets/base.html')
+    tickets = TicketEntrada.objects.all()
+
+    ene = 4
+    feb = 5
+    mar = 10
+    abr = 8
+    may = 10
+    jun = 15
+    jul = 13
+    ago = 10
+    sep = 11
+    oct = 14
+    nov = 10
+    dic = 0
+
+    dias_semana = {
+        0: 0,  # Lunes
+        1: 0,  # Martes
+        2: 0,  # Miércoles
+        3: 0,  # Jueves
+        4: 0,  # Viernes
+        5: 0,  # Sábado
+        6: 0   # Domingo
+    }
+
+    for t in tickets:
+        dia = t.date.weekday() 
+        dias_semana[dia] += 1 
+    dia_mas_frecuente = max(dias_semana, key=dias_semana.get)
+
+    nombres_dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    dia_frecuente_nombre = nombres_dias[dia_mas_frecuente]
+
+    for t in tickets:
+        mes = t.date.month 
+
+        if mes == 1:
+            ene += 1
+        elif mes == 2:
+            feb += 1
+        elif mes == 3:
+            mar += 1
+        elif mes == 4:
+            abr += 1
+        elif mes == 5:
+            may += 1
+        elif mes == 6:
+            jun += 1
+        elif mes == 7:
+            jul += 1
+        elif mes == 8:
+            ago += 1
+        elif mes == 9:
+            sep += 1
+        elif mes == 10:
+            oct += 1
+        elif mes == 11:
+            nov += 1
+        elif mes == 12:
+            dic += 1
+
+    return render(request, 'tickets/base.html', {
+        'ene': ene,
+        'feb': feb,
+        'mar': mar,
+        'abr': abr,
+        'may': may,
+        'jun': jun,
+        'jul': jul,
+        'ago': ago,
+        'sep': sep,
+        'oct': oct,
+        'nov': nov,
+        'dic': dic,
+        'dia_frecuente': dia_frecuente_nombre,
+        'frecuencia': dias_semana[dia_mas_frecuente],
+    })
 
 # ----------------------------------- # ROLES
 
@@ -90,23 +176,69 @@ class DeleteRol(UserPassesTestMixin, DeleteView):
         return super().form_valid(form)
     
 # ----------------------------------- # PROTOCOLOS
-
 @method_decorator(login_required, name='dispatch')    
-class CreateProtocolo(UserPassesTestMixin, CreateView, ListView):
+class CreateProtocolo(UserPassesTestMixin, CreateView):
     model = Protocolo
     form_class = ProtocoloForm
     template_name = 'tickets/protocolos/protocolo.html'
     success_url = reverse_lazy('protocolos')
     context_object_name = 'protocolos'
 
+    # Método para listar todos los protocolos
+    def get_queryset(self):
+        return Protocolo.objects.all()
+
     def test_func(self):
         rol = self.request.user.rol.name
         return rol in ['root', 'Administrador']
     
     def form_valid(self, form):
+        rut = form.cleaned_data.get('rut')
+        try:
+            validar_rut(rut)
+        except ValidationError as e:
+            form.add_error('rut', str(e))
+            return self.form_invalid(form)
+
+        name = form.cleaned_data.get('name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', name):
+            form.add_error('name', 'El nombre solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
+        last_name = form.cleaned_data.get('last_name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', last_name):
+            form.add_error('last_name', 'El apellido solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
+        hora_ingreso = form.cleaned_data.get('hora_ingreso')
+        # -----------------------------------------------------------------------------------------------------------------------
+        # ESTO ESTA MAL ESPECIFICADO: PORQUE SE SUPONE QUE AQUI SE REGISTRA LA HORA DE INGRESO DEl TICKET PERDIDO NO LA ACTUAL
+        # -----------------------------------------------------------------------------------------------------------------------
+
+        # if hora_ingreso and hora_ingreso >= datetime.now().time():
+        #     form.add_error('hora_ingreso', 'La hora de ingreso debe ser anterior a la hora actual.')
+        #     return self.form_invalid(form)
+        
+        hora_salida = form.cleaned_data.get('hora_salida')
+        if hora_salida and hora_salida <= hora_ingreso:
+            form.add_error('hora_salida', 'La hora de salida debe ser despues a la hora de ingreso.')
+            return self.form_invalid(form)
+        
+        patente = form.cleaned_data.get('patente')
+        if not re.match(r'^[A-Z]{4}\d{2}$', patente):
+            form.add_error('patente', 'La patente debe tener 4 letras mayusculas seguidas de 2 números.')
+            return self.form_invalid(form)
+
         messages.success(self.request, '¡Protocolo Agregado con exito!')
         return super().form_valid(form)
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['protocolos'] = self.get_queryset() 
+
+        if self.request.method != 'POST':
+            context['form'] = self.get_form()
+        return context
 
 @method_decorator(login_required, name='dispatch')    
 class UpdateProtocolo(UserPassesTestMixin, UpdateView):
@@ -120,7 +252,40 @@ class UpdateProtocolo(UserPassesTestMixin, UpdateView):
         return rol in ['root', 'Administrador']
 
     def form_valid(self, form):
-        messages.success(self.request, '¡Protocolo Actualizado con exito!')
+
+        rut = form.cleaned_data.get('rut')
+        try:
+            validar_rut(rut)
+        except ValidationError as e:
+            form.add_error('rut', str(e))
+            return self.form_invalid(form)
+
+        name = form.cleaned_data.get('name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', name):
+            form.add_error('name', 'El nombre solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
+        last_name = form.cleaned_data.get('last_name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', last_name):
+            form.add_error('last_name', 'El apellido solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
+        hora_ingreso = form.cleaned_data.get('hora_ingreso')
+        # if hora_ingreso and hora_ingreso >= datetime.now().time():
+        #     form.add_error('hora_ingreso', 'La hora de ingreso debe ser anterior a la hora actual.')
+        #     return self.form_invalid(form)
+        
+        hora_salida = form.cleaned_data.get('hora_salida')
+        if hora_salida and hora_salida <= hora_ingreso:
+            form.add_error('hora_salida', 'La hora de salida debe ser despues a la hora de ingreso.')
+            return self.form_invalid(form)
+        
+        patente = form.cleaned_data.get('patente')
+        if not re.match(r'^[A-Z]{4}\d{2}$', patente):
+            form.add_error('patente', 'La patente debe tener 4 letras mayusculas seguidas de 2 números.')
+            return self.form_invalid(form)
+
+        messages.success(self.request, '¡Protocolo Agregado con exito!')
         return super().form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
@@ -152,12 +317,31 @@ class CreateUsuario(UserPassesTestMixin, CreateView):
         return rol in ['root', 'Administrador']
     
     def form_valid(self, form):
-        # nombre = form.instance.name 
+        username = form.cleaned_data.get('username')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', username):
+            form.add_error('username', 'El nombre de usuario solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+
+        rut = form.cleaned_data.get('rut')
+        try:
+            validar_rut(rut)
+        except ValidationError as e:
+            form.add_error('rut', str(e))
+            return self.form_invalid(form)
+
+        name = form.cleaned_data.get('name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', name):
+            form.add_error('name', 'El nombre solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
+        last_name = form.cleaned_data.get('last_name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', last_name):
+            form.add_error('last_name', 'El apellido solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
         user = form.save()
         messages.success(self.request, '¡Usuario Registrado con exito!')
         return super().form_valid(form)
-    
-    
     
 @method_decorator(login_required, name='dispatch')    
 class ListUsuario(UserPassesTestMixin, ListView):
@@ -182,7 +366,30 @@ class UpdateUsuario(UserPassesTestMixin, UpdateView):
         return rol in ['root', 'Administrador']
 
     def form_valid(self, form):
-        messages.success(self.request, '¡Usuario Actualizado con exito!')
+        username = form.cleaned_data.get('username')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', username):
+            form.add_error('username', 'El nombre de usuario solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+
+        rut = form.cleaned_data.get('rut')
+        try:
+            validar_rut(rut)
+        except ValidationError as e:
+            form.add_error('rut', str(e))
+            return self.form_invalid(form)
+
+        name = form.cleaned_data.get('name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', name):
+            form.add_error('name', 'El nombre solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
+        last_name = form.cleaned_data.get('last_name')
+        if not re.match(r'^[A-Za-záéíóúÁÉÍÓÚ\s]+$', last_name):
+            form.add_error('last_name', 'El apellido solo puede contener letras y espacios.')
+            return self.form_invalid(form)
+        
+        user = form.save()
+        messages.success(self.request, '¡Usuario Registrado con exito!')
         return super().form_valid(form)
 
 @method_decorator(login_required, name='dispatch')    

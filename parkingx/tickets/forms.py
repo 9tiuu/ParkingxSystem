@@ -1,4 +1,6 @@
 from django import forms
+#pip install rut
+#from rut import validate_rut  # Si usas la librería `rut`
 from .models import Usuario, Rol, Protocolo, TicketEntrada, TicketState, TicketSalida
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -22,13 +24,28 @@ class UsuarioForm(UserCreationForm):
             'username': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'required': ''}),
             'name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'required': ''}),
             'last_name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'required': ''}),
-            'rut': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':10, 'maxlength':10, 'required': ''}),
+            'rut': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':9, 'maxlength':10, 'required': ''}),
             'email': forms.EmailInput(attrs={'class': 'form-control form-crud'}),
             'rol': forms.Select(attrs={'class': 'form-control form-crud'}),
             'avatar':forms.ClearableFileInput(attrs={'class': 'form-control form-crud'}),
             'password1':forms.PasswordInput(attrs={'class': 'form-control form-crud'}),
             'password2':forms.PasswordInput(attrs={'class': 'form-control form-crud'})
         }
+
+        # def clean_rut(self):
+        #     rut = self.cleaned_data.get('rut')
+            
+        #     # Validar el formato del RUT y el dígito verificador
+        #     try:
+        #         validate_rut(rut)
+        #     except ValueError:
+        #         raise forms.ValidationError("El RUT ingresado no es válido.")
+            
+        #     # Verificar si el RUT ya está registrado en la base de datos
+        #     if Usuario.objects.filter(rut=rut).exists():
+        #         raise forms.ValidationError("El RUT ya está registrado.")
+            
+        #     return rut
     
 
 class RolForm(forms.ModelForm):
@@ -61,7 +78,7 @@ class UserUpdateForm(UserChangeForm):
             'username': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
             'name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
             'last_name': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
-            'rut': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':10, 'maxlength':10, 'required': ''}),
+            'rut': forms.TextInput(attrs={'class': 'form-control form-crud', 'minlength':9, 'maxlength':10, 'required': ''}),
             'email': forms.EmailInput(attrs={'class': 'form-control form-crud', 'minlength':2, 'maxlength':45, 'required': ''}),
             'rol': forms.Select(attrs={'class': 'form-control form-crud'}),
             'avatar':forms.ClearableFileInput(attrs={'class': 'form-control form-crud'})
@@ -86,21 +103,14 @@ class ProtocoloForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2, 'maxlength':45, 'required': ''}),
             'last_name': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2, 'maxlength':45, 'required': ''}),
-            'rut': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':10, 'maxlength':10, 'required': ''}),
-            'number': forms.NumberInput(attrs={'class': 'form-control mt-2', 'minlength':9, 'required': ''}),
+            'rut': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':9, 'maxlength':10, 'required': ''}),
+            'number': forms.NumberInput(attrs={'class': 'form-control mt-2', 'minlength':9, 'maxlength':9, 'required': ''}),
             'patente': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':6, 'required': ''}),
             'hora_ingreso': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control mt-2'}),
             'hora_salida': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control mt-2'}),
             'date': forms.TextInput(attrs={'type': 'date', 'class': 'form-control mt-2'}),
             'description': forms.TextInput(attrs={'class': 'form-control mt-2', 'minlength':2, 'required': ''}),
         }
-
-    def clean_patente(self):
-        patente = self.cleaned_data.get('patente')
-        if patente:
-            return patente.upper()
-        else:
-            return patente
         
 class TicketEForm(forms.ModelForm): # MODIFICAR ------
     class Meta:

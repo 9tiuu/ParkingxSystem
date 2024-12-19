@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from phonenumber_field.modelfields import PhoneNumberField 
 # from datetime import datetime, date, timedelta
 # from django.utils.timezone import now
 
@@ -43,14 +44,14 @@ class TicketEntrada(models.Model):
     price = models.FloatField(null=True, blank=True, default="20.0")
     
     def __str__(self) -> str:
-        return f'{self.patente} {self.state}'
+        return f'{self.patente} {self.state} {self.date}'
 
 class Protocolo(models.Model):
     # ID proporcionado por django
     name = models.CharField(max_length=45)
     last_name = models.CharField(max_length=45)
-    rut = models.CharField(max_length=10)
-    number = models.CharField(max_length=9)
+    rut = models.CharField(max_length=10, unique=True)
+    number = PhoneNumberField(region="CL", blank=False, null=True)
     patente = models.CharField(max_length=6)
     hora_ingreso = models.TimeField()
     hora_salida = models.TimeField()
